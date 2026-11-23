@@ -6,6 +6,11 @@
 <meta name="theme-color" content="#3b2a20">
 <meta name="description" content="Shreya's Diary — a private, beautifully bound personal diary.">
 <title>Shreya's Diary</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
    SHREYA'S DIARY — single file stylesheet
@@ -25,7 +30,8 @@
   --line:rgba(150,120,90,.28);
   --line-soft:rgba(150,120,90,.16);
   --shadow:0 18px 40px rgba(70,50,30,.28);
-  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+  --hand: 'Caveat', cursive;
+  --serif: "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
 }
 html,body{height:100%;}
 body{
@@ -83,13 +89,14 @@ input,textarea{font-family:inherit;}
 .cover-frame{position:relative;z-index:2;}
 .cover-orn{color:var(--gold-l);letter-spacing:.5em;font-size:13px;opacity:.85;margin-bottom:10px;}
 .cover-title{
-  font-size:clamp(26px,7vw,34px);
+  font-family:var(--hand);
+  font-size:clamp(32px,8vw,42px);
   margin:0 0 10px;
   line-height:1.18;
   letter-spacing:.06em;
   color:#f7e6bb;
   text-shadow:0 2px 10px rgba(0,0,0,.55);
-  font-weight:600;
+  font-weight:700;
 }
 .cover-rule{
   width:70px;height:1px;margin:12px auto 14px;
@@ -166,8 +173,9 @@ input,textarea{font-family:inherit;}
 .brand{display:flex;align-items:baseline;gap:9px;min-width:0;}
 .brand-mark{color:var(--gold);font-size:14px;}
 .brand h1{
-  margin:0;font-size:19px;letter-spacing:.05em;color:#5a3f2b;
+  margin:0;font-size:22px;letter-spacing:.05em;color:#5a3f2b;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;
+  font-family:var(--hand);
 }
 .icon-btn{
   width:38px;height:38px;flex:0 0 auto;
@@ -193,9 +201,10 @@ input,textarea{font-family:inherit;}
   padding:8px 15px;border-radius:999px;
   border:1px solid rgba(122,90,60,.25);
   background:rgba(255,250,240,.55);
-  color:#6b5138;font-size:13.5px;letter-spacing:.02em;
+  color:#6b5138;font-size:15px;letter-spacing:.02em;
   cursor:pointer;white-space:nowrap;
   transition:background .22s, color .22s, box-shadow .22s, border-color .22s;
+  font-family:var(--hand);
 }
 .tab:hover{background:rgba(255,253,247,.9);}
 .tab.active{
@@ -269,8 +278,9 @@ input,textarea{font-family:inherit;}
   padding:10px 15px;border-radius:10px;
   border:1px solid rgba(122,90,60,.28);
   background:rgba(255,252,245,.8);
-  color:var(--brown-d);font-size:13.5px;cursor:pointer;
+  color:var(--brown-d);font-size:15px;cursor:pointer;
   transition:background .2s, transform .12s, opacity .2s;
+  font-family:var(--hand);
 }
 .controls button:hover:not(:disabled){background:#fffdf7;}
 .controls button:active:not(:disabled){transform:translateY(1px);}
@@ -287,14 +297,15 @@ input,textarea{font-family:inherit;}
   border-bottom:1px solid var(--line-soft);
 }
 .page-weekday{
-  font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+  font-size:14px;letter-spacing:.22em;text-transform:uppercase;
   color:var(--rose);margin-bottom:3px;
 }
 .page-date{
-  font-size:19px;line-height:1.3;color:#4b3728;font-weight:600;
+  font-size:26px;line-height:1.3;color:#4b3728;font-weight:600;
+  font-family:var(--hand);
 }
 .save-status{
-  font-size:11.5px;color:#8fa06b;opacity:0;transition:opacity .3s;
+  font-size:13px;color:#8fa06b;opacity:0;transition:opacity .3s;
   letter-spacing:.06em;
 }
 .save-status.on{opacity:1;}
@@ -314,48 +325,32 @@ input,textarea{font-family:inherit;}
 
 .block{margin-top:22px;}
 .block-title{
-  font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--brown);margin:0 0 10px;font-weight:600;
+  font-size:18px;letter-spacing:.1em;color:var(--brown);margin:0 0 12px;font-weight:600;
+  font-family:var(--hand);
 }
-
-/* Thoughts textarea */
-.thoughts{
-  display:block;width:100%;
-  min-height:210px;
-  padding:0 0 6px 0;
-  border:none;outline:none;resize:vertical;
-  background-color:transparent;
-  background-image:repeating-linear-gradient(
-      to bottom,
-      transparent 0 27px,
-      var(--line) 27px 28px);
-  background-attachment:local;
-  line-height:28px;
-  font-size:16.5px;
-  color:var(--ink);
-}
-.thoughts::placeholder{color:#b6a68e;font-style:italic;}
 
 /* Tasks */
-.task-add{display:flex;gap:8px;margin-bottom:12px;}
+.task-add{display:flex;gap:8px;margin-bottom:15px;}
 .task-input{
   flex:1 1 auto;min-width:0;
-  padding:11px 13px;border-radius:9px;
+  padding:12px 15px;border-radius:9px;
   border:1px solid rgba(122,90,60,.25);
   background:rgba(255,253,247,.7);
-  font-size:15px;color:var(--ink);outline:none;
+  font-size:18px;color:var(--ink);outline:none;
   transition:border-color .2s, background .2s;
+  font-family:var(--hand);
 }
 .task-input:focus{border-color:rgba(201,162,39,.7);background:#fffdf7;}
 .task-input::placeholder{color:#b6a68e;}
 .btn-add{
   flex:0 0 auto;
-  padding:11px 17px;border-radius:9px;cursor:pointer;
+  padding:10px 18px;border-radius:9px;cursor:pointer;
   border:none;
   background:linear-gradient(180deg,#a9714c,#87532f);
-  color:#fdf1dc;font-size:14px;letter-spacing:.05em;
+  color:#fdf1dc;font-size:16px;letter-spacing:.05em;
   box-shadow:0 4px 12px rgba(110,70,40,.28);
   transition:filter .2s, transform .12s;
+  font-family:var(--hand);
 }
 .btn-add:hover{filter:brightness(1.08);}
 .btn-add:active{transform:translateY(1px);}
@@ -363,14 +358,14 @@ input,textarea{font-family:inherit;}
 .task-list{list-style:none;margin:0;padding:0;}
 .task{
   display:flex;align-items:center;gap:11px;
-  padding:9px 4px;
+  padding:10px 4px;
   border-bottom:1px dashed rgba(150,120,90,.22);
   animation:taskIn .25s ease;
 }
 @keyframes taskIn{from{opacity:0;transform:translateY(-5px);}to{opacity:1;transform:none;}}
 .task-check{
   flex:0 0 auto;
-  width:23px;height:23px;border-radius:6px;cursor:pointer;
+  width:24px;height:24px;border-radius:6px;cursor:pointer;
   border:1.5px solid rgba(122,90,60,.45);
   background:rgba(255,253,247,.8);
   display:grid;place-items:center;
@@ -383,8 +378,9 @@ input,textarea{font-family:inherit;}
   border-color:#6f4426;color:#fff6e6;
 }
 .task-text{
-  flex:1 1 auto;font-size:15.5px;line-height:1.45;
+  flex:1 1 auto;font-size:20px;line-height:1.45;
   word-break:break-word;transition:color .2s, opacity .2s;
+  font-family:var(--hand);
 }
 .task.done .task-text{
   text-decoration:line-through;
@@ -397,7 +393,7 @@ input,textarea{font-family:inherit;}
   display:grid;place-items:center;
   transition:color .2s, background .2s;
 }
-.task-del svg{width:16px;height:16px;fill:currentColor;}
+.task-del svg{width:18px;height:18px;fill:currentColor;}
 .task-del:hover{color:#b9543f;background:rgba(185,84,63,.1);}
 
 /* Stars */
@@ -415,19 +411,10 @@ input,textarea{font-family:inherit;}
   filter:drop-shadow(0 2px 5px rgba(201,162,39,.5));
 }
 .rating-text{
-  margin-top:8px;font-size:13.5px;color:var(--ink-soft);
+  margin-top:8px;font-size:18px;color:var(--ink-soft);
   font-style:italic;min-height:19px;letter-spacing:.02em;
+  font-family:var(--hand);
 }
-
-.swipe-hint{
-  margin-top:26px;padding-top:14px;
-  border-top:1px solid var(--line-soft);
-  text-align:center;
-  font-size:12px;letter-spacing:.14em;text-transform:uppercase;
-  color:#b8a78e;
-  animation:hintPulse 3.4s ease-in-out infinite;
-}
-@keyframes hintPulse{0%,100%{opacity:.55;}50%{opacity:1;}}
 
 /* ---------------- Quotes ---------------- */
 .quote-card{
@@ -447,12 +434,14 @@ input,textarea{font-family:inherit;}
   line-height:1;font-family:Georgia,serif;
 }
 .quote-text{
-  font-size:17.5px;line-height:1.62;font-style:italic;
+  font-size:24px;line-height:1.62;font-style:italic;
   color:#4d3a2a;margin:0 0 12px;position:relative;z-index:1;
+  font-family:var(--hand);
 }
 .quote-author{
-  font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+  font-size:16px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--rose);text-align:right;margin:0;
+  font-family:var(--hand);
 }
 .quote-actions{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap;}
 
@@ -465,13 +454,13 @@ input,textarea{font-family:inherit;}
   border-left:3px solid rgba(201,162,39,.6);
   display:flex;gap:12px;align-items:flex-start;
 }
-.saved-quote p{margin:0 0 5px;font-size:15px;line-height:1.55;font-style:italic;color:#4d3a2a;}
-.saved-quote small{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--rose);}
+.saved-quote p{margin:0 0 5px;font-size:20px;line-height:1.55;font-style:italic;color:#4d3a2a;font-family:var(--hand);}
+.saved-quote small{font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--rose);font-family:var(--hand);}
 .saved-quote .task-del{margin-left:auto;}
 
 .empty-note{
-  font-size:14px;color:#b0a08a;font-style:italic;
-  padding:14px 2px;
+  font-size:18px;color:#b0a08a;font-style:italic;
+  padding:14px 2px;font-family:var(--hand);
 }
 
 /* ---------------- Calendar ---------------- */
@@ -479,7 +468,7 @@ input,textarea{font-family:inherit;}
   display:flex;align-items:center;justify-content:space-between;
   margin:18px 0 12px;
 }
-.cal-month{font-size:17px;color:#4b3728;letter-spacing:.04em;font-weight:600;}
+.cal-month{font-size:24px;color:#4b3728;letter-spacing:.04em;font-weight:600;font-family:var(--hand);}
 .cal-nav{
   width:36px;height:36px;border-radius:9px;cursor:pointer;
   border:1px solid rgba(122,90,60,.25);
@@ -494,8 +483,9 @@ input,textarea{font-family:inherit;}
   gap:5px;
 }
 .cal-dow{
-  text-align:center;font-size:11px;letter-spacing:.1em;
+  text-align:center;font-size:13px;letter-spacing:.1em;
   color:#b0a08a;padding-bottom:5px;text-transform:uppercase;
+  font-family:var(--hand);
 }
 .cal-cell{
   position:relative;
@@ -504,9 +494,10 @@ input,textarea{font-family:inherit;}
   border-radius:9px;
   border:1px solid transparent;
   background:rgba(255,253,247,.5);
-  font-size:14.5px;color:#5b4632;
+  font-size:18px;color:#5b4632;
   cursor:pointer;
   transition:background .18s, transform .12s, border-color .18s;
+  font-family:var(--hand);
 }
 .cal-cell:hover:not(:disabled){background:#fffdf7;border-color:rgba(201,162,39,.5);}
 .cal-cell:active:not(:disabled){transform:scale(.95);}
@@ -546,8 +537,9 @@ input,textarea{font-family:inherit;}
   font-variant-numeric:tabular-nums;
 }
 .stat-label{
-  font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  font-size:14px;letter-spacing:.05em;
   color:#a8977e;margin-top:6px;line-height:1.35;
+  font-family:var(--hand);
 }
 .recent-item{
   padding:12px 14px;margin-bottom:9px;
@@ -559,11 +551,13 @@ input,textarea{font-family:inherit;}
 }
 .recent-item:hover{background:#fffdf7;transform:translateX(2px);}
 .recent-item .r-date{
-  font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--rose);
+  font-size:15px;letter-spacing:.11em;text-transform:uppercase;color:var(--rose);
+  font-family:var(--hand);
 }
 .recent-item .r-snip{
-  font-size:14.5px;color:#5b4632;margin-top:5px;line-height:1.5;
+  font-size:18px;color:#5b4632;margin-top:5px;line-height:1.5;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  font-family:var(--hand);
 }
 
 /* ---------------- Memories ---------------- */
@@ -575,9 +569,10 @@ input,textarea{font-family:inherit;}
   padding:12px 14px;border-radius:10px;
   border:1px solid rgba(122,90,60,.25);
   background:rgba(255,253,247,.72);
-  font-size:15px;line-height:1.55;color:var(--ink);
+  font-size:20px;line-height:1.55;color:var(--ink);
   outline:none;resize:vertical;
   transition:border-color .2s, background .2s;
+  font-family:var(--hand);
 }
 .memory-input:focus{border-color:rgba(201,162,39,.7);background:#fffdf7;}
 .memory-item{
@@ -589,8 +584,8 @@ input,textarea{font-family:inherit;}
   display:flex;gap:12px;align-items:flex-start;
 }
 .memory-body{flex:1 1 auto;min-width:0;}
-.memory-text{font-size:15px;line-height:1.6;color:#4d3a2a;margin:0 0 6px;white-space:pre-wrap;word-break:break-word;}
-.memory-date{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#b0a08a;}
+.memory-text{font-size:20px;line-height:1.6;color:#4d3a2a;margin:0 0 6px;white-space:pre-wrap;word-break:break-word;font-family:var(--hand);}
+.memory-date{font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:#b0a08a;font-family:var(--hand);}
 
 /* ---------------- Modal ---------------- */
 .modal{
@@ -615,11 +610,11 @@ input,textarea{font-family:inherit;}
   border:1px solid rgba(201,162,39,.3);
 }
 .modal-card h2{
-  margin:0 0 18px;font-size:20px;letter-spacing:.05em;color:#5a3f2b;
+  margin:0 0 18px;font-size:28px;letter-spacing:.05em;color:#5a3f2b;font-family:var(--hand);
 }
 .modal-card h3{
-  margin:20px 0 9px;font-size:12px;letter-spacing:.17em;text-transform:uppercase;
-  color:var(--brown);
+  margin:20px 0 9px;font-size:18px;letter-spacing:.1em;
+  color:var(--brown);font-family:var(--hand);
 }
 .modal-close{
   position:absolute;top:12px;right:12px;
@@ -639,7 +634,7 @@ input,textarea{font-family:inherit;}
 .row{display:flex;gap:9px;flex-wrap:wrap;}
 .msg{font-size:13px;min-height:18px;margin:8px 0 0;color:#a33a2e;}
 .msg.ok{color:#5e7f45;}
-.hint{font-size:12px;line-height:1.55;color:#a8977e;margin:10px 0 0;}
+.hint{font-size:16px;line-height:1.55;color:#a8977e;margin:10px 0 0;font-family:var(--hand);}
 
 /* ---------------- Toast ---------------- */
 #toast{
@@ -648,11 +643,12 @@ input,textarea{font-family:inherit;}
   z-index:200;
   padding:11px 20px;border-radius:999px;
   background:rgba(59,42,32,.94);
-  color:#f7e9d0;font-size:13.5px;letter-spacing:.03em;
+  color:#f7e9d0;font-size:15px;letter-spacing:.03em;
   box-shadow:0 10px 30px rgba(0,0,0,.4);
   opacity:0;pointer-events:none;
   transition:opacity .28s ease, transform .28s ease;
   max-width:90vw;text-align:center;
+  font-family:var(--hand);
 }
 #toast.show{opacity:1;transform:translate(-50%,0);}
 
@@ -664,10 +660,10 @@ input,textarea{font-family:inherit;}
 /* ---------------- Small phones ---------------- */
 @media (max-width:420px){
   .paper-inner{padding:16px 15px 40px 20px;}
-  .brand h1{font-size:17px;}
-  .controls button{padding:9px 11px;font-size:12.5px;}
+  .brand h1{font-size:20px;}
+  .controls button{padding:9px 11px;font-size:14px;}
   .stat-num{font-size:22px;}
-  .quote-text{font-size:16px;}
+  .quote-text{font-size:22px;}
 }
 </style>
 </head>
@@ -687,7 +683,7 @@ input,textarea{font-family:inherit;}
         <button type="submit" class="btn-gold" id="lockSubmit">CREATE &amp; UNLOCK</button>
       </form>
       <p class="lock-msg" id="lockMsg" role="alert"></p>
-      <p class="cover-note">Your password is stored as a hash in this browser only. This is a simple lock, not military-grade encryption — please remember your password, it cannot be recovered.</p>
+      <p class="cover-note">Your password is stored as a hash in this browser only. This is a simple lock, not military-grade encryption.</p>
     </div>
   </div>
 </div>
@@ -718,10 +714,10 @@ input,textarea{font-family:inherit;}
 
   <nav class="tabs" id="tabs" aria-label="Diary sections">
     <button class="tab active" data-view="day">My Day</button>
-    <button class="tab" data-view="quotes">Favourite Quotes</button>
+    <button class="tab" data-view="quotes">Quotes</button>
     <button class="tab" data-view="calendar">Calendar</button>
     <button class="tab" data-view="journey">My Journey</button>
-    <button class="tab" data-view="memories">Little Memories</button>
+    <button class="tab" data-view="memories">Memories</button>
     <button class="tab" data-view="bookmarks">Bookmarks</button>
   </nav>
 
@@ -762,7 +758,7 @@ input,textarea{font-family:inherit;}
       <button class="btn-soft" id="importBtn">Import JSON</button>
       <input type="file" id="importFile" accept="application/json,.json" hidden>
     </div>
-    <p class="hint">Everything is stored only in this browser on this device. Export a backup regularly. Syncing between different devices would require a server — this app does not do that.</p>
+    <p class="hint">Everything is stored only in this browser on this device. Export a backup regularly.</p>
 
     <h3>Danger Zone</h3>
     <button class="btn-danger" id="wipeBtn">Delete all diary data</button>
@@ -771,12 +767,15 @@ input,textarea{font-family:inherit;}
 </div>
 
 <script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW registration failed', err));
+  });
+}
+
 (function () {
 'use strict';
 
-/* ============================================================
-   1. CONSTANTS & SMALL HELPERS
-   ============================================================ */
 var STORAGE_KEY = 'shreyas_diary_v1';
 var SWIPE_MIN = 68;
 var DAYS_BACK = 10;
@@ -840,9 +839,6 @@ function fallbackHash(str) {
   return ('00000000' + h1.toString(16)).slice(-8) + ('00000000' + h2.toString(16)).slice(-8);
 }
 
-/* ============================================================
-   2. STATE & STORAGE
-   ============================================================ */
 var state = null;
 var view = 'day';
 var currentDate = todayKey();
@@ -870,7 +866,6 @@ function loadState() {
     s.bookmarks = Array.isArray(p.bookmarks) ? p.bookmarks.filter(function (k) { return typeof k === 'string'; }) : [];
     return s;
   } catch (err) {
-    console.warn('Diary data could not be read — starting fresh.', err);
     return defaultState();
   }
 }
@@ -895,24 +890,19 @@ function flushSave() {
 
 function getDay(dk) {
   if (!state.days[dk] || typeof state.days[dk] !== 'object') {
-    state.days[dk] = { thoughts: '', tasks: [], rating: 0 };
+    state.days[dk] = { tasks: [], rating: 0 };
   }
   var d = state.days[dk];
-  if (typeof d.thoughts !== 'string') d.thoughts = '';
   if (!Array.isArray(d.tasks)) d.tasks = [];
   if (typeof d.rating !== 'number' || d.rating < 0 || d.rating > 5) d.rating = 0;
   return d;
 }
 function hasContent(d) {
   if (!d || typeof d !== 'object') return false;
-  return !!((d.thoughts && String(d.thoughts).trim()) ||
-    (Array.isArray(d.tasks) && d.tasks.length > 0) ||
+  return !!((Array.isArray(d.tasks) && d.tasks.length > 0) ||
     (typeof d.rating === 'number' && d.rating > 0));
 }
 
-/* ============================================================
-   3. TOAST
-   ============================================================ */
 var toastTimer = null;
 function toast(msg) {
   var t = document.getElementById('toast');
@@ -929,9 +919,6 @@ function toast(msg) {
   toastTimer = setTimeout(function () { t.classList.remove('show'); }, 2300);
 }
 
-/* ============================================================
-   4. PASSWORD / AUTH
-   ============================================================ */
 function hashPassword(pw, salt, forceAlgo) {
   var algo = forceAlgo || ((window.crypto && window.crypto.subtle) ? 'sha256' : 'fallback');
   if (algo === 'sha256' && window.crypto && window.crypto.subtle) {
@@ -962,9 +949,6 @@ function verifyPassword(pw) {
   });
 }
 
-/* ============================================================
-   5. SCREEN MANAGEMENT
-   ============================================================ */
 function showLockScreen(mode) {
   var lock = document.getElementById('lockScreen');
   var cover = document.getElementById('coverScreen');
@@ -985,7 +969,7 @@ function showLockScreen(mode) {
     btn.textContent = 'CREATE & UNLOCK';
   } else {
     pw2.style.display = 'none';
-    sub.textContent = 'Welcome back. Enter your password to open the cover.';
+    sub.textContent = 'Welcome back. Enter your password.';
     btn.textContent = 'UNLOCK';
   }
   setTimeout(function () {
@@ -1008,9 +992,6 @@ function openDiary() {
   render();
 }
 
-/* ============================================================
-   6. PAGE LIST & NAVIGATION
-   ============================================================ */
 function getPageList() {
   var set = Object.create(null);
   var tk = todayKey();
@@ -1020,7 +1001,7 @@ function getPageList() {
     if (k <= tk && hasContent(state.days[k])) set[k] = true;
   });
   state.bookmarks.forEach(function (k) { if (k <= tk) set[k] = true; });
-  return Object.keys(set).sort().reverse(); /* newest first */
+  return Object.keys(set).sort().reverse();
 }
 
 function pageTurn(dir, mutate) {
@@ -1056,7 +1037,7 @@ function goNext() {
   var list = getPageList();
   var i = list.indexOf(currentDate);
   if (i < 0) { currentDate = list[0]; render(); return; }
-  if (i >= list.length - 1) { toast('This is the oldest page in your diary.'); return; }
+  if (i >= list.length - 1) { toast('This is the oldest page.'); return; }
   pageTurn(1, function () { currentDate = list[i + 1]; view = 'day'; });
   flushSave();
 }
@@ -1078,9 +1059,6 @@ function openDate(key) {
   updateTabs();
 }
 
-/* ============================================================
-   7. RENDER DISPATCH
-   ============================================================ */
 function render() {
   var inner = document.getElementById('paperInner');
   if (!inner) return;
@@ -1114,34 +1092,14 @@ function updateControls() {
   var nextBtn = document.getElementById('nextBtn');
   prevBtn.disabled = (i <= 0);
   nextBtn.disabled = (i >= list.length - 1);
-  prevBtn.title = i > 0 ? 'Newer: ' + prettyShort(list[i - 1]) : 'Most recent page';
-  nextBtn.title = (i >= 0 && i < list.length - 1) ? 'Older: ' + prettyShort(list[i + 1]) : 'Oldest page';
 }
 
-function prettyShort(k) {
-  var d = parseKey(k);
-  return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
-}
-
-function flashSaved() {
-  var s = document.getElementById('saveStatus');
-  if (!s) return;
-  s.textContent = 'Saved ✓';
-  s.classList.add('on');
-  clearTimeout(s._t);
-  s._t = setTimeout(function () { s.classList.remove('on'); }, 1400);
-}
-
-/* ============================================================
-   8. VIEW: MY DAY
-   ============================================================ */
 function renderDay(inner) {
   var dk = currentDate;
   var d = getDay(dk);
   var dt = parseKey(dk);
   var isToday = (dk === todayKey());
 
-  /* ---- header ---- */
   var head = el('div', 'page-head');
   var headLeft = el('div');
   headLeft.appendChild(el('div', 'page-weekday', dt.toLocaleDateString(undefined, { weekday: 'long' })));
@@ -1177,30 +1135,14 @@ function renderDay(inner) {
   head.appendChild(bm);
   inner.appendChild(head);
 
-  /* ---- thoughts ---- */
-  var tBlock = el('section', 'block');
-  tBlock.appendChild(el('h3', 'block-title', "Today's Thoughts"));
-  var ta = el('textarea', 'thoughts');
-  ta.placeholder = 'Dear diary…';
-  ta.value = d.thoughts || '';
-  ta.setAttribute('aria-label', "Today's thoughts");
-  ta.setAttribute('spellcheck', 'true');
-  ta.addEventListener('input', function () {
-    d.thoughts = ta.value;
-    save();
-    flashSaved();
-  });
-  tBlock.appendChild(ta);
-  inner.appendChild(tBlock);
-
-  /* ---- tasks ---- */
   var taskBlock = el('section', 'block');
+  taskBlock.style.marginTop = '30px'; // Added space since thoughts are gone
   taskBlock.appendChild(el('h3', 'block-title', 'Daily Tasks'));
   var addRow = el('div', 'task-add');
   var taskInput = el('input', 'task-input');
   taskInput.type = 'text';
   taskInput.maxLength = 160;
-  taskInput.placeholder = 'Add a task for this day…';
+  taskInput.placeholder = 'Add a task…';
   taskInput.setAttribute('aria-label', 'New task');
   var addBtn = el('button', 'btn-add', 'Add');
   addBtn.type = 'button';
@@ -1228,8 +1170,8 @@ function renderDay(inner) {
     if (e.key === 'Enter') { e.preventDefault(); addTask(); }
   });
 
-  /* ---- stars ---- */
   var starBlock = el('section', 'block');
+  starBlock.style.marginTop = '40px'; // Space before rating
   starBlock.appendChild(el('h3', 'block-title', 'How was your day?'));
   var starsWrap = el('div', 'stars');
   starsWrap.setAttribute('role', 'radiogroup');
@@ -1266,9 +1208,6 @@ function renderDay(inner) {
   starBlock.appendChild(starsWrap);
   starBlock.appendChild(ratingText);
   inner.appendChild(starBlock);
-
-  /* ---- hint ---- */
-  inner.appendChild(el('div', 'swipe-hint', 'Swipe up to turn the page ✦'));
 }
 
 function taskNode(t, dayRef, listRef) {
@@ -1308,9 +1247,6 @@ function taskNode(t, dayRef, listRef) {
   return li;
 }
 
-/* ============================================================
-   9. VIEW: FAVOURITE QUOTES
-   ============================================================ */
 function renderQuotes(inner) {
   var head = el('div', 'page-head');
   var hl = el('div');
@@ -1396,9 +1332,6 @@ function renderQuotes(inner) {
   }
 }
 
-/* ============================================================
-   10. VIEW: CALENDAR
-   ============================================================ */
 function renderCalendar(inner) {
   var y = calMonth.getFullYear();
   var m = calMonth.getMonth();
@@ -1473,9 +1406,6 @@ function renderCalendar(inner) {
   });
 }
 
-/* ============================================================
-   11. VIEW: MY JOURNEY
-   ============================================================ */
 function computeStreak() {
   var streak = 0;
   var cursor = new Date();
@@ -1534,11 +1464,11 @@ function renderJourney(inner) {
     inner.appendChild(p);
   }
 
-  inner.appendChild(el('h3', 'block-title', 'Recent Diary Entries')).style.marginTop = '28px';
+  inner.appendChild(el('h3', 'block-title', 'Recent Days')).style.marginTop = '28px';
 
   var recent = keys.slice().sort().reverse().slice(0, 6);
   if (!recent.length) {
-    inner.appendChild(el('p', 'empty-note', 'Your journey starts with the first line you write.'));
+    inner.appendChild(el('p', 'empty-note', 'Your journey starts with the first task you write.'));
     return;
   }
   recent.forEach(function (k) {
@@ -1549,13 +1479,11 @@ function renderJourney(inner) {
     var dt = parseKey(k);
     item.appendChild(el('div', 'r-date',
       dt.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })));
-    var snippet = (d.thoughts && d.thoughts.trim()) ? d.thoughts.trim() : '';
-    if (!snippet) {
-      if (Array.isArray(d.tasks) && d.tasks.length) snippet = d.tasks.length + ' task' + (d.tasks.length === 1 ? '' : 's') + ' written.';
-      else if (d.rating) snippet = RATING_WORDS[d.rating] + '.';
-      else snippet = 'A quiet day.';
-    }
-    item.appendChild(el('div', 'r-snip', escapeHtml(snippet.slice(0, 160))));
+    var snippet = '';
+    if (Array.isArray(d.tasks) && d.tasks.length) snippet = d.tasks.length + ' task' + (d.tasks.length === 1 ? '' : 's') + ' written.';
+    else if (d.rating) snippet = RATING_WORDS[d.rating] + '.';
+    else snippet = 'A quiet day.';
+    item.appendChild(el('div', 'r-snip', escapeHtml(snippet)));
     item.addEventListener('click', function () { openDate(k); });
     item.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDate(k); }
@@ -1570,9 +1498,6 @@ function escapeHtml(s) {
   });
 }
 
-/* ============================================================
-   12. VIEW: LITTLE MEMORIES
-   ============================================================ */
 function renderMemories(inner) {
   var head = el('div', 'page-head');
   var hl = el('div');
@@ -1644,9 +1569,6 @@ function renderMemories(inner) {
   });
 }
 
-/* ============================================================
-   13. VIEW: BOOKMARKS
-   ============================================================ */
 function renderBookmarks(inner) {
   var head = el('div', 'page-head');
   var hl = el('div');
@@ -1670,8 +1592,8 @@ function renderBookmarks(inner) {
     item.appendChild(el('div', 'r-date',
       dt.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })));
     var d = state.days[k];
-    var snippet = (d && d.thoughts && d.thoughts.trim()) ? d.thoughts.trim() : 'No words written on this page yet.';
-    item.appendChild(el('div', 'r-snip', escapeHtml(snippet.slice(0, 130))));
+    var snippet = (d && d.tasks && d.tasks.length) ? d.tasks.length + ' tasks recorded.' : 'No tasks on this page yet.';
+    item.appendChild(el('div', 'r-snip', escapeHtml(snippet)));
 
     var del = el('button', 'task-del');
     del.type = 'button';
@@ -1697,9 +1619,6 @@ function renderBookmarks(inner) {
   });
 }
 
-/* ============================================================
-   14. TOUCH / SWIPE NAVIGATION
-   ============================================================ */
 var touchInfo = null;
 
 function isEditable(node) {
@@ -1727,8 +1646,6 @@ function onTouchStart(e) {
 
 function onTouchMove(e) {
   if (!touchInfo || !touchInfo.active) return;
-  /* If the user starts moving significantly, remember the dominant axis
-     so a mostly-horizontal gesture never turns the page. */
   if (e.touches.length !== 1) return;
   var t = e.touches[0];
   var dx = Math.abs(t.clientX - touchInfo.x);
@@ -1751,17 +1668,16 @@ function onTouchEnd(e) {
   if (scroller) {
     var atBottom = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 10;
     var atTop = scroller.scrollTop <= 10;
-    if (dy < 0 && !atBottom) return;  /* still scrolling the page down */
-    if (dy > 0 && !atTop) return;     /* still scrolling the page up */
+    if (dy < 0 && !atBottom) return;
+    if (dy > 0 && !atTop) return;
   }
 
-  if (dy < 0) goNext();
-  else goPrev();
+  // Swipe UP (dy < 0) -> goPrev (Newer pages)
+  // Swipe DOWN (dy > 0) -> goNext (Older pages)
+  if (dy < 0) goPrev();
+  else goNext();
 }
 
-/* ============================================================
-   15. SETTINGS / BACKUP
-   ============================================================ */
 function openSettings() {
   document.getElementById('settingsModal').classList.remove('hidden');
   document.getElementById('pwMsg').textContent = '';
@@ -1826,17 +1742,12 @@ function importData(file) {
   reader.readAsText(file);
 }
 
-/* ============================================================
-   16. INIT
-   ============================================================ */
 function init() {
-  /* spiral rings */
   var spiral = document.getElementById('spiral');
   for (var i = 0; i < 16; i++) spiral.appendChild(el('div', 'ring'));
 
   state = loadState();
 
-  /* ---- lock screen wiring ---- */
   var lockForm = document.getElementById('lockForm');
   var lockMsg = document.getElementById('lockMsg');
   var lockMode = 'create';
@@ -1880,10 +1791,8 @@ function init() {
     }
   });
 
-  /* ---- cover ---- */
   document.getElementById('openDiaryBtn').addEventListener('click', openDiary);
 
-  /* ---- tabs ---- */
   var tabs = document.getElementById('tabs');
   tabs.addEventListener('click', function (e) {
     var btn = e.target.closest('.tab');
@@ -1897,7 +1806,6 @@ function init() {
     updateTabs();
   });
 
-  /* ---- page controls ---- */
   document.getElementById('prevBtn').addEventListener('click', goPrev);
   document.getElementById('nextBtn').addEventListener('click', goNext);
   document.getElementById('todayBtn').addEventListener('click', function () {
@@ -1909,7 +1817,6 @@ function init() {
     updateTabs();
   });
 
-  /* ---- settings ---- */
   document.getElementById('settingsBtn').addEventListener('click', openSettings);
   document.getElementById('closeSettings').addEventListener('click', closeSettings);
   document.getElementById('settingsModal').addEventListener('click', function (e) {
@@ -1962,14 +1869,12 @@ function init() {
     location.reload();
   });
 
-  /* ---- swipe listeners ---- */
   var paper = document.getElementById('paper');
   paper.addEventListener('touchstart', onTouchStart, { passive: true });
   paper.addEventListener('touchmove', onTouchMove, { passive: true });
   paper.addEventListener('touchend', onTouchEnd, { passive: true });
   paper.addEventListener('touchcancel', function () { touchInfo = null; }, { passive: true });
 
-  /* ---- keyboard arrows (desktop) ---- */
   document.addEventListener('keydown', function (e) {
     if (!document.getElementById('app').classList.contains('show')) return;
     if (document.getElementById('settingsModal').classList.contains('hidden') === false) return;
@@ -1979,13 +1884,11 @@ function init() {
     else if (e.key === 'ArrowDown') { e.preventDefault(); goPrev(); }
   });
 
-  /* ---- persistence safety ---- */
   window.addEventListener('beforeunload', flushSave);
   document.addEventListener('visibilitychange', function () {
     if (document.visibilityState === 'hidden') flushSave();
   });
 
-  /* ---- first render (app is hidden until OPEN is pressed) ---- */
   render();
   updateTabs();
 }
