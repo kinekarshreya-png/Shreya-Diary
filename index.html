@@ -300,8 +300,11 @@ input,textarea{font-family:inherit;}
         <input type="time" id="notifyTime2" value="20:00">
       </div>
     </div>
-    <button type="button" class="btn-soft" id="saveNotifyBtn">Enable &amp; Save Times</button>
-    <p class="hint" id="notifyStatus">Enable notifications to be reminded.</p>
+    <div class="row" style="margin-bottom:10px;">
+      <button type="button" class="btn-soft" id="saveNotifyBtn" style="flex:1;">Enable &amp; Save</button>
+      <button type="button" class="btn-soft" id="testNotifyBtn" style="flex:1;">Test Notification</button>
+    </div>
+    <p class="hint" id="notifyStatus">Enable notifications to be reminded twice a day.</p>
 
     <h3>Change Password</h3>
     <form id="pwForm" autocomplete="off">
@@ -773,7 +776,7 @@ function onTouchEnd(e) {
   if (dy < 0) goPrev(); else goNext();
 }
 
-/* === NOTIFICATIONS LOGIC === */
+/* === NOTIFICATIONS LOGIC (UPDATED) === */
 var lastNotified = {};
 
 function setupNotifications() {
@@ -797,7 +800,7 @@ function setupNotifications() {
         state.notifications.enabled = true;
         save(true);
         updateNotifyStatus();
-        toast("Notifications enabled!");
+        toast("Notifications enabled! Try Test button.");
       } else {
         state.notifications.enabled = false;
         save(true);
@@ -807,9 +810,18 @@ function setupNotifications() {
     });
   });
 
-  // Check the time every minute
-  setInterval(checkNotificationTime, 60000);
-  // Also check immediately on load
+  document.getElementById('testNotifyBtn').addEventListener('click', function() {
+    if (Notification.permission !== 'granted') {
+      toast("Please enable notifications first.");
+      return;
+    }
+    sendNotification("Test Notification 📖", "Your diary reminders are working perfectly!");
+  });
+
+  // Check every 30 seconds while app is open
+  setInterval(checkNotificationTime, 30000);
+  
+  // Catch-up check on app load
   setTimeout(checkNotificationTime, 2000);
 }
 
@@ -831,12 +843,15 @@ function checkNotificationTime() {
   var currentTime = pad(now.getHours()) + ":" + pad(now.getMinutes());
   var dateStr = todayKey();
 
-  if (currentTime === state.notifications.time1 && lastNotified[dateStr + '_1'] !== true) {
+  // Check Morning
+  if (currentTime >= state.notifications.time1 && lastNotified[dateStr + '_1'] !== true) {
+    // Catch-up logic: If it's past the time today and we haven't notified yet, notify immediately
     sendNotification("Morning Reminder ☀️", "Good morning, Shreya! Time to plan your day in your diary.");
     lastNotified[dateStr + '_1'] = true;
   }
 
-  if (currentTime === state.notifications.time2 && lastNotified[dateStr + '_2'] !== true) {
+  // Check Evening
+  if (currentTime >= state.notifications.time2 && lastNotified[dateStr + '_2'] !== true) {
     sendNotification("Evening Check-in 🌙", "How was your day, Shreya? Update your daily tasks and star rating!");
     lastNotified[dateStr + '_2'] = true;
   }
@@ -850,7 +865,6 @@ function sendNotification(title, body) {
       body: body
     });
   } else {
-    // Fallback if SW is not active yet
     new Notification(title, { body: body, icon: './icon.svg' });
   }
 }
