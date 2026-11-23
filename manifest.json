@@ -1,0 +1,17 @@
+{
+  "name": "Shreya's Diary",
+  "short_name": "Diary",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fdf8ec",
+  "theme_color": "#3b2a20",
+  "description": "A quiet place for thoughts, days and little memories.",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
