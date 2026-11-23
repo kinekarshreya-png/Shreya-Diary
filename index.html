@@ -1,0 +1,2002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#3b2a20">
+<meta name="description" content="Shreya's Diary — a private, beautifully bound personal diary.">
+<title>Shreya's Diary</title>
+<style>
+/* ============================================================
+   SHREYA'S DIARY — single file stylesheet
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;}
+:root{
+  --paper:#fdf8ec;
+  --paper2:#f6eeda;
+  --ink:#4a3a2c;
+  --ink-soft:#7d6952;
+  --brown:#8a5a3b;
+  --brown-d:#5f3d24;
+  --brown-x:#3b2a20;
+  --gold:#c9a227;
+  --gold-l:#e6cd74;
+  --rose:#c08a86;
+  --line:rgba(150,120,90,.28);
+  --line-soft:rgba(150,120,90,.16);
+  --shadow:0 18px 40px rgba(70,50,30,.28);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+}
+html,body{height:100%;}
+body{
+  margin:0;
+  font-family:var(--serif);
+  color:var(--ink);
+  background:
+    radial-gradient(1200px 700px at 50% -15%, #f4e9d6 0%, transparent 65%),
+    linear-gradient(165deg,#e9dcc6 0%,#d9c7a9 55%,#c9b391 100%);
+  background-attachment:fixed;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+button{font-family:inherit;color:inherit;}
+input,textarea{font-family:inherit;}
+::selection{background:rgba(201,162,39,.35);}
+
+/* ---------------- Screens (lock / cover) ---------------- */
+.screen{
+  position:fixed;inset:0;z-index:80;
+  display:flex;align-items:center;justify-content:center;
+  padding:22px;
+  background:
+    radial-gradient(circle at 50% 25%, #6d4c36 0%, #402c1f 45%, #221710 100%);
+  transition:opacity .55s ease, visibility .55s ease;
+}
+.screen.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+.cover-book{
+  position:relative;
+  width:min(420px,100%);
+  max-height:calc(100vh - 44px);
+  overflow-y:auto;
+  padding:34px 26px 26px;
+  border-radius:6px 16px 16px 6px;
+  background:
+    linear-gradient(150deg,#8d5f3e 0%,#6f4529 55%,#54331e 100%);
+  color:#f8ecd6;
+  box-shadow:
+    0 34px 70px rgba(0,0,0,.6),
+    0 2px 0 rgba(255,220,170,.12),
+    inset 0 0 0 1px rgba(255,220,170,.16);
+  text-align:center;
+}
+.cover-book::before{
+  content:"";position:absolute;left:13px;top:10px;bottom:10px;width:7px;
+  border-radius:6px;
+  background:linear-gradient(90deg, rgba(0,0,0,.45), rgba(255,220,170,.10) 60%, rgba(0,0,0,.25));
+}
+.cover-book::after{
+  content:"";position:absolute;inset:14px;border:1px solid rgba(230,205,116,.28);
+  border-radius:3px 12px 12px 3px;pointer-events:none;
+}
+.cover-frame{position:relative;z-index:2;}
+.cover-orn{color:var(--gold-l);letter-spacing:.5em;font-size:13px;opacity:.85;margin-bottom:10px;}
+.cover-title{
+  font-size:clamp(26px,7vw,34px);
+  margin:0 0 10px;
+  line-height:1.18;
+  letter-spacing:.06em;
+  color:#f7e6bb;
+  text-shadow:0 2px 10px rgba(0,0,0,.55);
+  font-weight:600;
+}
+.cover-rule{
+  width:70px;height:1px;margin:12px auto 14px;
+  background:linear-gradient(90deg,transparent,var(--gold-l),transparent);
+}
+.cover-line{
+  font-size:14.5px;line-height:1.6;color:#ead9bb;opacity:.9;
+  margin:0 0 20px;
+}
+.cover-input{
+  display:block;width:100%;
+  margin:0 0 11px;
+  padding:13px 15px;
+  border-radius:9px;
+  border:1px solid rgba(255,220,170,.32);
+  background:rgba(0,0,0,.22);
+  color:#fdf3e2;
+  font-size:16px;
+  outline:none;
+  transition:border-color .2s, background .2s;
+}
+.cover-input::placeholder{color:rgba(255,235,210,.45);}
+.cover-input:focus{border-color:rgba(230,205,116,.75);background:rgba(0,0,0,.32);}
+.lock-msg{min-height:18px;font-size:13px;color:#f0b9b0;margin:10px 0 0;}
+.cover-note{font-size:11.5px;line-height:1.5;color:rgba(240,225,200,.5);margin:16px 0 0;}
+.cover-book .btn-gold{width:100%;margin-top:4px;}
+
+/* ---------------- Buttons ---------------- */
+.btn-gold{
+  display:inline-block;
+  padding:13px 22px;
+  border:none;border-radius:10px;
+  background:linear-gradient(180deg,#e9d18a 0%,#d8b44a 45%,#c9a227 100%);
+  color:#3a2a12;
+  font-size:15.5px;font-weight:700;letter-spacing:.09em;
+  cursor:pointer;
+  box-shadow:0 6px 18px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.5);
+  transition:transform .12s ease, box-shadow .2s ease, filter .2s;
+}
+.btn-gold:hover{filter:brightness(1.06);}
+.btn-gold:active{transform:translateY(1px) scale(.99);}
+.btn-gold.sm{padding:9px 16px;font-size:14px;letter-spacing:.05em;}
+.btn-soft{
+  padding:10px 16px;border-radius:9px;cursor:pointer;
+  border:1px solid rgba(122,90,60,.3);
+  background:rgba(255,252,245,.75);
+  color:var(--brown-d);font-size:14px;
+  transition:background .2s, box-shadow .2s, transform .12s;
+}
+.btn-soft:hover{background:#fffdf7;box-shadow:0 3px 10px rgba(122,90,60,.14);}
+.btn-soft:active{transform:translateY(1px);}
+.btn-danger{
+  padding:10px 16px;border-radius:9px;cursor:pointer;
+  border:1px solid rgba(170,60,50,.4);
+  background:rgba(200,90,80,.1);
+  color:#a33a2e;font-size:14px;
+}
+.btn-danger:hover{background:rgba(200,90,80,.2);}
+
+/* ---------------- App shell ---------------- */
+#app{
+  position:fixed;inset:0;
+  display:flex;flex-direction:column;
+  opacity:0;visibility:hidden;
+  transition:opacity .6s ease .05s, visibility .6s;
+}
+#app.show{opacity:1;visibility:visible;}
+
+.topbar{
+  flex:0 0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px 2px;
+}
+.brand{display:flex;align-items:baseline;gap:9px;min-width:0;}
+.brand-mark{color:var(--gold);font-size:14px;}
+.brand h1{
+  margin:0;font-size:19px;letter-spacing:.05em;color:#5a3f2b;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;
+}
+.icon-btn{
+  width:38px;height:38px;flex:0 0 auto;
+  display:grid;place-items:center;
+  border-radius:50%;border:1px solid rgba(122,90,60,.25);
+  background:rgba(255,250,240,.6);
+  color:#6b5138;font-size:17px;cursor:pointer;
+  transition:background .2s, transform .2s;
+}
+.icon-btn:hover{background:#fffdf8;transform:rotate(18deg);}
+
+.tabs{
+  flex:0 0 auto;
+  display:flex;gap:7px;
+  padding:8px 14px 11px;
+  overflow-x:auto;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{
+  flex:0 0 auto;
+  padding:8px 15px;border-radius:999px;
+  border:1px solid rgba(122,90,60,.25);
+  background:rgba(255,250,240,.55);
+  color:#6b5138;font-size:13.5px;letter-spacing:.02em;
+  cursor:pointer;white-space:nowrap;
+  transition:background .22s, color .22s, box-shadow .22s, border-color .22s;
+}
+.tab:hover{background:rgba(255,253,247,.9);}
+.tab.active{
+  background:linear-gradient(180deg,#8d5f3e,#6a4327);
+  color:#f7e7c9;border-color:#5a3a22;
+  box-shadow:0 5px 14px rgba(90,58,34,.32);
+}
+
+/* ---------------- Notebook ---------------- */
+.stage{
+  flex:1 1 auto;min-height:0;
+  display:flex;justify-content:center;
+  padding:0 10px;
+}
+.notebook{
+  width:100%;max-width:760px;
+  display:flex;flex-direction:column;min-height:0;
+  perspective:1800px;
+  perspective-origin:50% 0%;
+}
+.spiral{
+  flex:0 0 auto;height:24px;
+  display:flex;align-items:flex-end;
+  padding:0 8px;
+  position:relative;z-index:3;
+}
+.ring{
+  flex:1 1 0;height:15px;margin:0 3px;border-radius:50%;
+  background:linear-gradient(180deg,#f2ece0 0%,#c2b49c 40%,#8d806c 70%,#5f5546 100%);
+  box-shadow:0 2px 3px rgba(0,0,0,.28), inset 0 -1px 1px rgba(255,255,255,.55);
+}
+.paper{
+  flex:1 1 auto;min-height:0;position:relative;
+  transform-origin:50% 0%;
+  transform:rotateX(0deg);
+  will-change:transform,opacity;
+  background:linear-gradient(180deg,#fdf8ec 0%,#f9f2e2 55%,#f4ecd8 100%);
+  border-radius:3px 3px 9px 9px;
+  box-shadow:
+    0 20px 44px rgba(70,50,30,.3),
+    0 2px 0 #e8dcc2,
+    0 3px 0 #dccfb2,
+    inset 0 0 70px rgba(200,175,135,.18);
+  overflow:hidden;
+}
+.paper::before{
+  content:"";position:absolute;top:0;bottom:0;left:0;width:26px;
+  background:linear-gradient(90deg, rgba(150,120,90,.10), transparent);
+  pointer-events:none;z-index:2;
+}
+.paper-inner{
+  height:100%;
+  overflow-y:auto;
+  overflow-x:hidden;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  padding:20px 20px 46px 28px;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(150,120,90,.35) transparent;
+}
+.paper-inner::-webkit-scrollbar{width:7px;}
+.paper-inner::-webkit-scrollbar-thumb{background:rgba(150,120,90,.3);border-radius:6px;}
+
+.controls{
+  flex:0 0 auto;
+  display:flex;gap:8px;justify-content:center;align-items:center;
+  padding:11px 12px 16px;
+}
+.controls button{
+  flex:0 1 auto;
+  padding:10px 15px;border-radius:10px;
+  border:1px solid rgba(122,90,60,.28);
+  background:rgba(255,252,245,.8);
+  color:var(--brown-d);font-size:13.5px;cursor:pointer;
+  transition:background .2s, transform .12s, opacity .2s;
+}
+.controls button:hover:not(:disabled){background:#fffdf7;}
+.controls button:active:not(:disabled){transform:translateY(1px);}
+.controls button:disabled{opacity:.35;cursor:default;}
+.controls #todayBtn{
+  background:linear-gradient(180deg,#e9d18a,#cfa93e);
+  color:#3a2a12;font-weight:600;border-color:rgba(150,115,30,.5);
+}
+
+/* ---------------- Page content ---------------- */
+.page-head{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
+  padding-bottom:12px;margin-bottom:4px;
+  border-bottom:1px solid var(--line-soft);
+}
+.page-weekday{
+  font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--rose);margin-bottom:3px;
+}
+.page-date{
+  font-size:19px;line-height:1.3;color:#4b3728;font-weight:600;
+}
+.save-status{
+  font-size:11.5px;color:#8fa06b;opacity:0;transition:opacity .3s;
+  letter-spacing:.06em;
+}
+.save-status.on{opacity:1;}
+.bm-btn{
+  flex:0 0 auto;
+  width:38px;height:38px;display:grid;place-items:center;
+  border-radius:9px;cursor:pointer;
+  border:1px solid rgba(122,90,60,.22);
+  background:rgba(255,252,245,.6);
+  color:#b7a992;
+  transition:color .2s, background .2s, transform .15s;
+}
+.bm-btn svg{width:19px;height:19px;fill:currentColor;}
+.bm-btn:hover{background:#fffdf7;}
+.bm-btn.active{color:var(--gold);background:rgba(201,162,39,.13);border-color:rgba(201,162,39,.5);}
+.bm-btn:active{transform:scale(.94);}
+
+.block{margin-top:22px;}
+.block-title{
+  font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--brown);margin:0 0 10px;font-weight:600;
+}
+
+/* Thoughts textarea */
+.thoughts{
+  display:block;width:100%;
+  min-height:210px;
+  padding:0 0 6px 0;
+  border:none;outline:none;resize:vertical;
+  background-color:transparent;
+  background-image:repeating-linear-gradient(
+      to bottom,
+      transparent 0 27px,
+      var(--line) 27px 28px);
+  background-attachment:local;
+  line-height:28px;
+  font-size:16.5px;
+  color:var(--ink);
+}
+.thoughts::placeholder{color:#b6a68e;font-style:italic;}
+
+/* Tasks */
+.task-add{display:flex;gap:8px;margin-bottom:12px;}
+.task-input{
+  flex:1 1 auto;min-width:0;
+  padding:11px 13px;border-radius:9px;
+  border:1px solid rgba(122,90,60,.25);
+  background:rgba(255,253,247,.7);
+  font-size:15px;color:var(--ink);outline:none;
+  transition:border-color .2s, background .2s;
+}
+.task-input:focus{border-color:rgba(201,162,39,.7);background:#fffdf7;}
+.task-input::placeholder{color:#b6a68e;}
+.btn-add{
+  flex:0 0 auto;
+  padding:11px 17px;border-radius:9px;cursor:pointer;
+  border:none;
+  background:linear-gradient(180deg,#a9714c,#87532f);
+  color:#fdf1dc;font-size:14px;letter-spacing:.05em;
+  box-shadow:0 4px 12px rgba(110,70,40,.28);
+  transition:filter .2s, transform .12s;
+}
+.btn-add:hover{filter:brightness(1.08);}
+.btn-add:active{transform:translateY(1px);}
+
+.task-list{list-style:none;margin:0;padding:0;}
+.task{
+  display:flex;align-items:center;gap:11px;
+  padding:9px 4px;
+  border-bottom:1px dashed rgba(150,120,90,.22);
+  animation:taskIn .25s ease;
+}
+@keyframes taskIn{from{opacity:0;transform:translateY(-5px);}to{opacity:1;transform:none;}}
+.task-check{
+  flex:0 0 auto;
+  width:23px;height:23px;border-radius:6px;cursor:pointer;
+  border:1.5px solid rgba(122,90,60,.45);
+  background:rgba(255,253,247,.8);
+  display:grid;place-items:center;
+  color:transparent;
+  transition:background .2s, border-color .2s, color .2s;
+}
+.task-check svg{width:14px;height:14px;}
+.task.done .task-check{
+  background:linear-gradient(180deg,#a9714c,#87532f);
+  border-color:#6f4426;color:#fff6e6;
+}
+.task-text{
+  flex:1 1 auto;font-size:15.5px;line-height:1.45;
+  word-break:break-word;transition:color .2s, opacity .2s;
+}
+.task.done .task-text{
+  text-decoration:line-through;
+  color:#a2937d;opacity:.8;
+}
+.task-del{
+  flex:0 0 auto;
+  width:30px;height:30px;border-radius:8px;cursor:pointer;
+  border:none;background:transparent;color:#c2b39b;
+  display:grid;place-items:center;
+  transition:color .2s, background .2s;
+}
+.task-del svg{width:16px;height:16px;fill:currentColor;}
+.task-del:hover{color:#b9543f;background:rgba(185,84,63,.1);}
+
+/* Stars */
+.stars{display:flex;gap:6px;}
+.star{
+  background:none;border:none;padding:2px;cursor:pointer;
+  color:#d8cdb8;
+  line-height:0;
+  transition:transform .15s ease, color .2s ease, filter .2s;
+}
+.star svg{width:32px;height:32px;fill:currentColor;transition:fill .2s;}
+.star:hover{transform:scale(1.14);}
+.star.on{
+  color:#d8ab21;
+  filter:drop-shadow(0 2px 5px rgba(201,162,39,.5));
+}
+.rating-text{
+  margin-top:8px;font-size:13.5px;color:var(--ink-soft);
+  font-style:italic;min-height:19px;letter-spacing:.02em;
+}
+
+.swipe-hint{
+  margin-top:26px;padding-top:14px;
+  border-top:1px solid var(--line-soft);
+  text-align:center;
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:#b8a78e;
+  animation:hintPulse 3.4s ease-in-out infinite;
+}
+@keyframes hintPulse{0%,100%{opacity:.55;}50%{opacity:1;}}
+
+/* ---------------- Quotes ---------------- */
+.quote-card{
+  margin-top:16px;
+  padding:24px 22px;
+  border-radius:12px;
+  background:
+    linear-gradient(180deg, rgba(255,253,247,.95), rgba(249,241,224,.95));
+  border:1px solid rgba(201,162,39,.32);
+  box-shadow:0 8px 24px rgba(122,90,60,.1), inset 0 0 40px rgba(230,205,140,.16);
+  position:relative;
+}
+.quote-card::before{
+  content:"\201C";
+  position:absolute;top:-4px;left:12px;
+  font-size:58px;color:rgba(201,162,39,.28);
+  line-height:1;font-family:Georgia,serif;
+}
+.quote-text{
+  font-size:17.5px;line-height:1.62;font-style:italic;
+  color:#4d3a2a;margin:0 0 12px;position:relative;z-index:1;
+}
+.quote-author{
+  font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--rose);text-align:right;margin:0;
+}
+.quote-actions{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap;}
+
+.saved-quote{
+  padding:14px 15px;
+  margin-bottom:10px;
+  border-radius:10px;
+  background:rgba(255,253,247,.7);
+  border:1px solid rgba(150,120,90,.18);
+  border-left:3px solid rgba(201,162,39,.6);
+  display:flex;gap:12px;align-items:flex-start;
+}
+.saved-quote p{margin:0 0 5px;font-size:15px;line-height:1.55;font-style:italic;color:#4d3a2a;}
+.saved-quote small{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--rose);}
+.saved-quote .task-del{margin-left:auto;}
+
+.empty-note{
+  font-size:14px;color:#b0a08a;font-style:italic;
+  padding:14px 2px;
+}
+
+/* ---------------- Calendar ---------------- */
+.cal-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin:18px 0 12px;
+}
+.cal-month{font-size:17px;color:#4b3728;letter-spacing:.04em;font-weight:600;}
+.cal-nav{
+  width:36px;height:36px;border-radius:9px;cursor:pointer;
+  border:1px solid rgba(122,90,60,.25);
+  background:rgba(255,252,245,.7);
+  color:var(--brown-d);font-size:19px;line-height:1;
+  display:grid;place-items:center;
+  transition:background .2s;
+}
+.cal-nav:hover{background:#fffdf7;}
+.cal-grid{
+  display:grid;grid-template-columns:repeat(7,1fr);
+  gap:5px;
+}
+.cal-dow{
+  text-align:center;font-size:11px;letter-spacing:.1em;
+  color:#b0a08a;padding-bottom:5px;text-transform:uppercase;
+}
+.cal-cell{
+  position:relative;
+  aspect-ratio:1/1;
+  display:grid;place-items:center;
+  border-radius:9px;
+  border:1px solid transparent;
+  background:rgba(255,253,247,.5);
+  font-size:14.5px;color:#5b4632;
+  cursor:pointer;
+  transition:background .18s, transform .12s, border-color .18s;
+}
+.cal-cell:hover:not(:disabled){background:#fffdf7;border-color:rgba(201,162,39,.5);}
+.cal-cell:active:not(:disabled){transform:scale(.95);}
+.cal-cell.empty{background:transparent;cursor:default;pointer-events:none;}
+.cal-cell.future{opacity:.3;cursor:default;}
+.cal-cell.today{
+  background:linear-gradient(180deg,#e9d18a,#cfa93e);
+  color:#3a2a12;font-weight:700;
+  box-shadow:0 3px 10px rgba(201,162,39,.4);
+}
+.cal-cell.has-entry::after{
+  content:"";position:absolute;bottom:5px;left:50%;transform:translateX(-50%);
+  width:5px;height:5px;border-radius:50%;background:var(--rose);
+}
+.cal-cell.today.has-entry::after{background:#7a4a1e;}
+.cal-cell.bookmarked::before{
+  content:"★";position:absolute;top:2px;right:4px;
+  font-size:9px;color:var(--gold);
+}
+
+/* ---------------- Journey ---------------- */
+.stat-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:10px;margin-top:16px;
+}
+@media(min-width:560px){.stat-grid{grid-template-columns:repeat(4,1fr);}}
+.stat-card{
+  padding:15px 13px;
+  border-radius:12px;
+  background:linear-gradient(180deg, rgba(255,253,247,.92), rgba(248,240,222,.92));
+  border:1px solid rgba(201,162,39,.28);
+  text-align:center;
+  box-shadow:0 5px 16px rgba(122,90,60,.09);
+}
+.stat-num{
+  font-size:26px;font-weight:700;color:#8a5a3b;line-height:1.1;
+  font-variant-numeric:tabular-nums;
+}
+.stat-label{
+  font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:#a8977e;margin-top:6px;line-height:1.35;
+}
+.recent-item{
+  padding:12px 14px;margin-bottom:9px;
+  border-radius:10px;
+  background:rgba(255,253,247,.66);
+  border:1px solid rgba(150,120,90,.16);
+  cursor:pointer;
+  transition:background .18s, transform .12s;
+}
+.recent-item:hover{background:#fffdf7;transform:translateX(2px);}
+.recent-item .r-date{
+  font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--rose);
+}
+.recent-item .r-snip{
+  font-size:14.5px;color:#5b4632;margin-top:5px;line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+
+/* ---------------- Memories ---------------- */
+.memory-form{
+  display:flex;flex-direction:column;gap:9px;margin-top:16px;
+}
+.memory-input{
+  width:100%;min-height:88px;
+  padding:12px 14px;border-radius:10px;
+  border:1px solid rgba(122,90,60,.25);
+  background:rgba(255,253,247,.72);
+  font-size:15px;line-height:1.55;color:var(--ink);
+  outline:none;resize:vertical;
+  transition:border-color .2s, background .2s;
+}
+.memory-input:focus{border-color:rgba(201,162,39,.7);background:#fffdf7;}
+.memory-item{
+  padding:14px 16px;margin-top:10px;
+  border-radius:11px;
+  background:linear-gradient(180deg, rgba(255,253,247,.92), rgba(250,243,228,.92));
+  border:1px solid rgba(150,120,90,.18);
+  border-left:3px solid var(--rose);
+  display:flex;gap:12px;align-items:flex-start;
+}
+.memory-body{flex:1 1 auto;min-width:0;}
+.memory-text{font-size:15px;line-height:1.6;color:#4d3a2a;margin:0 0 6px;white-space:pre-wrap;word-break:break-word;}
+.memory-date{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#b0a08a;}
+
+/* ---------------- Modal ---------------- */
+.modal{
+  position:fixed;inset:0;z-index:70;
+  display:flex;align-items:center;justify-content:center;
+  padding:18px;
+  background:rgba(40,28,20,.55);
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+  transition:opacity .3s ease, visibility .3s;
+}
+.modal.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+.modal-card{
+  position:relative;
+  width:min(460px,100%);
+  max-height:calc(100vh - 40px);
+  overflow-y:auto;
+  padding:26px 22px 22px;
+  border-radius:14px;
+  background:linear-gradient(180deg,#fdf8ec,#f6eeda);
+  box-shadow:0 30px 70px rgba(0,0,0,.45);
+  border:1px solid rgba(201,162,39,.3);
+}
+.modal-card h2{
+  margin:0 0 18px;font-size:20px;letter-spacing:.05em;color:#5a3f2b;
+}
+.modal-card h3{
+  margin:20px 0 9px;font-size:12px;letter-spacing:.17em;text-transform:uppercase;
+  color:var(--brown);
+}
+.modal-close{
+  position:absolute;top:12px;right:12px;
+  width:32px;height:32px;border-radius:50%;cursor:pointer;
+  border:none;background:rgba(122,90,60,.1);color:#7d6952;font-size:15px;
+  display:grid;place-items:center;
+}
+.modal-close:hover{background:rgba(122,90,60,.2);}
+.modal-card input[type=password]{
+  display:block;width:100%;margin-bottom:9px;
+  padding:11px 13px;border-radius:9px;
+  border:1px solid rgba(122,90,60,.25);
+  background:rgba(255,253,247,.8);
+  font-size:15px;color:var(--ink);outline:none;
+}
+.modal-card input[type=password]:focus{border-color:rgba(201,162,39,.7);}
+.row{display:flex;gap:9px;flex-wrap:wrap;}
+.msg{font-size:13px;min-height:18px;margin:8px 0 0;color:#a33a2e;}
+.msg.ok{color:#5e7f45;}
+.hint{font-size:12px;line-height:1.55;color:#a8977e;margin:10px 0 0;}
+
+/* ---------------- Toast ---------------- */
+#toast{
+  position:fixed;left:50%;bottom:26px;
+  transform:translate(-50%,18px);
+  z-index:200;
+  padding:11px 20px;border-radius:999px;
+  background:rgba(59,42,32,.94);
+  color:#f7e9d0;font-size:13.5px;letter-spacing:.03em;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+  opacity:0;pointer-events:none;
+  transition:opacity .28s ease, transform .28s ease;
+  max-width:90vw;text-align:center;
+}
+#toast.show{opacity:1;transform:translate(-50%,0);}
+
+/* ---------------- Reduced motion ---------------- */
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001s !important;transition-duration:.001s !important;}
+}
+
+/* ---------------- Small phones ---------------- */
+@media (max-width:420px){
+  .paper-inner{padding:16px 15px 40px 20px;}
+  .brand h1{font-size:17px;}
+  .controls button{padding:9px 11px;font-size:12.5px;}
+  .stat-num{font-size:22px;}
+  .quote-text{font-size:16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ LOCK SCREEN ============ -->
+<div class="screen" id="lockScreen">
+  <div class="cover-book">
+    <div class="cover-frame">
+      <div class="cover-orn">✦ ✦ ✦</div>
+      <h1 class="cover-title">Shreya's Diary</h1>
+      <div class="cover-rule"></div>
+      <p class="cover-line" id="lockSub">Create a password to keep your diary private.</p>
+      <form id="lockForm" autocomplete="off" novalidate>
+        <input class="cover-input" type="password" id="pw1" placeholder="Password" autocomplete="new-password" aria-label="Password">
+        <input class="cover-input" type="password" id="pw2" placeholder="Confirm password" autocomplete="new-password" aria-label="Confirm password">
+        <button type="submit" class="btn-gold" id="lockSubmit">CREATE &amp; UNLOCK</button>
+      </form>
+      <p class="lock-msg" id="lockMsg" role="alert"></p>
+      <p class="cover-note">Your password is stored as a hash in this browser only. This is a simple lock, not military-grade encryption — please remember your password, it cannot be recovered.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ COVER SCREEN ============ -->
+<div class="screen hidden" id="coverScreen">
+  <div class="cover-book">
+    <div class="cover-frame">
+      <div class="cover-orn">✦ ✦ ✦</div>
+      <h1 class="cover-title">Shreya's<br>Diary</h1>
+      <div class="cover-rule"></div>
+      <p class="cover-line">A quiet place for thoughts,<br>days and little memories.</p>
+      <button class="btn-gold" id="openDiaryBtn">OPEN THE DIARY</button>
+      <p class="cover-note">Private · Saved on this device</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">✦</span>
+      <h1>Shreya's Diary</h1>
+    </div>
+    <button class="icon-btn" id="settingsBtn" aria-label="Open settings" title="Settings">⚙</button>
+  </header>
+
+  <nav class="tabs" id="tabs" aria-label="Diary sections">
+    <button class="tab active" data-view="day">My Day</button>
+    <button class="tab" data-view="quotes">Favourite Quotes</button>
+    <button class="tab" data-view="calendar">Calendar</button>
+    <button class="tab" data-view="journey">My Journey</button>
+    <button class="tab" data-view="memories">Little Memories</button>
+    <button class="tab" data-view="bookmarks">Bookmarks</button>
+  </nav>
+
+  <div class="stage">
+    <div class="notebook">
+      <div class="spiral" id="spiral" aria-hidden="true"></div>
+      <div class="paper" id="paper">
+        <div class="paper-inner" id="paperInner"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls" id="controls">
+    <button id="prevBtn" title="Previous page">‹ Previous</button>
+    <button id="todayBtn" title="Go to today">Go to Today</button>
+    <button id="nextBtn" title="Next page">Next ›</button>
+  </div>
+</div>
+
+<!-- ============ SETTINGS MODAL ============ -->
+<div class="modal hidden" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+  <div class="modal-card">
+    <button class="modal-close" id="closeSettings" aria-label="Close settings">✕</button>
+    <h2 id="settingsTitle">Settings</h2>
+
+    <h3>Change Password</h3>
+    <form id="pwForm" autocomplete="off">
+      <input type="password" id="curPw" placeholder="Current password" autocomplete="current-password">
+      <input type="password" id="newPw" placeholder="New password (min 4 characters)" autocomplete="new-password">
+      <input type="password" id="newPw2" placeholder="Confirm new password" autocomplete="new-password">
+      <button type="submit" class="btn-gold sm">Update Password</button>
+      <p class="msg" id="pwMsg" role="alert"></p>
+    </form>
+
+    <h3>Backup &amp; Restore</h3>
+    <div class="row">
+      <button class="btn-soft" id="exportBtn">Export JSON</button>
+      <button class="btn-soft" id="importBtn">Import JSON</button>
+      <input type="file" id="importFile" accept="application/json,.json" hidden>
+    </div>
+    <p class="hint">Everything is stored only in this browser on this device. Export a backup regularly. Syncing between different devices would require a server — this app does not do that.</p>
+
+    <h3>Danger Zone</h3>
+    <button class="btn-danger" id="wipeBtn">Delete all diary data</button>
+    <p class="hint">This permanently removes every entry, task, rating, memory, quote and bookmark from this browser.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+'use strict';
+
+/* ============================================================
+   1. CONSTANTS & SMALL HELPERS
+   ============================================================ */
+var STORAGE_KEY = 'shreyas_diary_v1';
+var SWIPE_MIN = 68;
+var DAYS_BACK = 10;
+
+var STAR_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.94 5.96 6.58.96-4.76 4.64 1.12 6.55L12 17.62 6.12 20.71l1.12-6.55L2.48 9.52l6.58-.96z"/></svg>';
+var BOOKMARK_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4.2L5 21V4a1 1 0 0 1 1-1z"/></svg>';
+var TRASH_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zm-3 6h12l-1 12H7L6 9z"/></svg>';
+var CHECK_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+var RATING_WORDS = ['', 'A hard day', 'Not bad', 'A good day', 'A lovely day', 'A perfect day'];
+
+var QUOTES = [
+  { t: 'The future belongs to those who believe in the beauty of their dreams.', a: 'Eleanor Roosevelt' },
+  { t: 'You are never too old to set another goal or to dream a new dream.', a: 'C. S. Lewis' },
+  { t: 'Happiness is not something ready made. It comes from your own actions.', a: 'Dalai Lama' },
+  { t: 'The best way to predict the future is to create it.', a: 'Peter Drucker' },
+  { t: 'In the middle of difficulty lies opportunity.', a: 'Albert Einstein' },
+  { t: 'She believed she could, so she did.', a: 'R. S. Grey' },
+  { t: 'And still, like dust, I\u2019ll rise.', a: 'Maya Angelou' },
+  { t: 'Do small things with great love.', a: 'Mother Teresa' },
+  { t: 'What you seek is seeking you.', a: 'Rumi' },
+  { t: 'Stars can\u2019t shine without darkness.', a: 'Unknown' },
+  { t: 'It always seems impossible until it is done.', a: 'Nelson Mandela' },
+  { t: 'The wound is the place where the light enters you.', a: 'Rumi' },
+  { t: 'Not all those who wander are lost.', a: 'J. R. R. Tolkien' },
+  { t: 'A day without laughter is a day wasted.', a: 'Charlie Chaplin' },
+  { t: 'Collect beautiful moments, not things.', a: 'Unknown' },
+  { t: 'Write it down. It is the only way to make it real.', a: 'Unknown' }
+];
+
+function el(tag, cls, html) {
+  var e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (html != null) e.innerHTML = html;
+  return e;
+}
+function pad(n) { return String(n).padStart(2, '0'); }
+function dkOf(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function todayKey() { return dkOf(new Date()); }
+function addDays(d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() + n); x.setHours(12, 0, 0, 0); return x; }
+function parseKey(k) { var p = String(k).split('-').map(Number); return new Date(p[0], p[1] - 1, p[2], 12, 0, 0); }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+function randomHex(len) {
+  var out = '';
+  if (window.crypto && window.crypto.getRandomValues) {
+    var arr = new Uint8Array(Math.ceil(len / 2));
+    window.crypto.getRandomValues(arr);
+    for (var i = 0; i < arr.length; i++) out += arr[i].toString(16).padStart(2, '0');
+  } else {
+    for (var j = 0; j < len; j++) out += Math.floor(Math.random() * 16).toString(16);
+  }
+  return out.slice(0, len);
+}
+function fallbackHash(str) {
+  var h1 = 0x811c9dc5, h2 = 0x1000193;
+  for (var i = 0; i < str.length; i++) {
+    var c = str.charCodeAt(i);
+    h1 ^= c; h1 = (h1 * 16777619) >>> 0;
+    h2 = ((h2 << 5) + h2 + c) >>> 0;
+  }
+  return ('00000000' + h1.toString(16)).slice(-8) + ('00000000' + h2.toString(16)).slice(-8);
+}
+
+/* ============================================================
+   2. STATE & STORAGE
+   ============================================================ */
+var state = null;
+var view = 'day';
+var currentDate = todayKey();
+var calMonth = new Date();
+calMonth.setDate(1);
+calMonth.setHours(12, 0, 0, 0);
+var currentQuoteIdx = Math.floor(Math.random() * QUOTES.length);
+var turning = false;
+
+function defaultState() {
+  return { version: 1, auth: null, days: {}, quotes: [], memories: [], bookmarks: [] };
+}
+
+function loadState() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return defaultState();
+    var p = JSON.parse(raw);
+    if (!p || typeof p !== 'object') return defaultState();
+    var s = defaultState();
+    s.auth = (p.auth && typeof p.auth === 'object' && p.auth.hash) ? p.auth : null;
+    s.days = (p.days && typeof p.days === 'object' && !Array.isArray(p.days)) ? p.days : {};
+    s.quotes = Array.isArray(p.quotes) ? p.quotes.filter(function (q) { return q && typeof q.t === 'string'; }) : [];
+    s.memories = Array.isArray(p.memories) ? p.memories.filter(function (m) { return m && typeof m.text === 'string'; }) : [];
+    s.bookmarks = Array.isArray(p.bookmarks) ? p.bookmarks.filter(function (k) { return typeof k === 'string'; }) : [];
+    return s;
+  } catch (err) {
+    console.warn('Diary data could not be read — starting fresh.', err);
+    return defaultState();
+  }
+}
+
+var saveTimer = null;
+function save(immediate) {
+  clearTimeout(saveTimer);
+  var write = function () {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (err) {
+      toast('Could not save — browser storage may be full.');
+    }
+  };
+  if (immediate) write();
+  else saveTimer = setTimeout(write, 320);
+}
+function flushSave() {
+  if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+}
+
+function getDay(dk) {
+  if (!state.days[dk] || typeof state.days[dk] !== 'object') {
+    state.days[dk] = { thoughts: '', tasks: [], rating: 0 };
+  }
+  var d = state.days[dk];
+  if (typeof d.thoughts !== 'string') d.thoughts = '';
+  if (!Array.isArray(d.tasks)) d.tasks = [];
+  if (typeof d.rating !== 'number' || d.rating < 0 || d.rating > 5) d.rating = 0;
+  return d;
+}
+function hasContent(d) {
+  if (!d || typeof d !== 'object') return false;
+  return !!((d.thoughts && String(d.thoughts).trim()) ||
+    (Array.isArray(d.tasks) && d.tasks.length > 0) ||
+    (typeof d.rating === 'number' && d.rating > 0));
+}
+
+/* ============================================================
+   3. TOAST
+   ============================================================ */
+var toastTimer = null;
+function toast(msg) {
+  var t = document.getElementById('toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.setAttribute('role', 'status');
+    t.setAttribute('aria-live', 'polite');
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { t.classList.remove('show'); }, 2300);
+}
+
+/* ============================================================
+   4. PASSWORD / AUTH
+   ============================================================ */
+function hashPassword(pw, salt, forceAlgo) {
+  var algo = forceAlgo || ((window.crypto && window.crypto.subtle) ? 'sha256' : 'fallback');
+  if (algo === 'sha256' && window.crypto && window.crypto.subtle) {
+    var data = new TextEncoder().encode(salt + '::' + pw);
+    return crypto.subtle.digest('SHA-256', data).then(function (buf) {
+      var bytes = new Uint8Array(buf), hex = '';
+      for (var i = 0; i < bytes.length; i++) hex += bytes[i].toString(16).padStart(2, '0');
+      return { algo: 'sha256', hash: hex };
+    }).catch(function () {
+      return { algo: 'fallback', hash: fallbackHash(salt + '::' + pw) };
+    });
+  }
+  return Promise.resolve({ algo: 'fallback', hash: fallbackHash(salt + '::' + pw) });
+}
+
+function createPassword(pw) {
+  var salt = randomHex(24);
+  return hashPassword(pw, salt).then(function (res) {
+    state.auth = { salt: salt, algo: res.algo, hash: res.hash, created: new Date().toISOString() };
+    save(true);
+  });
+}
+
+function verifyPassword(pw) {
+  if (!state.auth) return Promise.resolve(false);
+  return hashPassword(pw, state.auth.salt, state.auth.algo).then(function (res) {
+    return res.hash === state.auth.hash;
+  });
+}
+
+/* ============================================================
+   5. SCREEN MANAGEMENT
+   ============================================================ */
+function showLockScreen(mode) {
+  var lock = document.getElementById('lockScreen');
+  var cover = document.getElementById('coverScreen');
+  var app = document.getElementById('app');
+  lock.classList.remove('hidden');
+  cover.classList.add('hidden');
+  app.classList.remove('show');
+
+  var pw2 = document.getElementById('pw2');
+  var sub = document.getElementById('lockSub');
+  var btn = document.getElementById('lockSubmit');
+  var msg = document.getElementById('lockMsg');
+  msg.textContent = '';
+
+  if (mode === 'create') {
+    pw2.style.display = 'block';
+    sub.textContent = 'Create a password to keep your diary private.';
+    btn.textContent = 'CREATE & UNLOCK';
+  } else {
+    pw2.style.display = 'none';
+    sub.textContent = 'Welcome back. Enter your password to open the cover.';
+    btn.textContent = 'UNLOCK';
+  }
+  setTimeout(function () {
+    var p1 = document.getElementById('pw1');
+    if (p1) p1.focus();
+  }, 420);
+}
+
+function showCoverScreen() {
+  document.getElementById('lockScreen').classList.add('hidden');
+  document.getElementById('coverScreen').classList.remove('hidden');
+  document.getElementById('app').classList.remove('show');
+}
+
+function openDiary() {
+  document.getElementById('coverScreen').classList.add('hidden');
+  document.getElementById('app').classList.add('show');
+  currentDate = todayKey();
+  view = 'day';
+  render();
+}
+
+/* ============================================================
+   6. PAGE LIST & NAVIGATION
+   ============================================================ */
+function getPageList() {
+  var set = Object.create(null);
+  var tk = todayKey();
+  var now = new Date();
+  for (var i = 0; i <= DAYS_BACK; i++) set[dkOf(addDays(now, -i))] = true;
+  Object.keys(state.days).forEach(function (k) {
+    if (k <= tk && hasContent(state.days[k])) set[k] = true;
+  });
+  state.bookmarks.forEach(function (k) { if (k <= tk) set[k] = true; });
+  return Object.keys(set).sort().reverse(); /* newest first */
+}
+
+function pageTurn(dir, mutate) {
+  if (turning) return;
+  var paper = document.getElementById('paper');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!paper || reduce) {
+    mutate();
+    render();
+    return;
+  }
+  turning = true;
+  paper.style.transition = 'transform .26s cubic-bezier(.4,0,.75,1), opacity .26s ease-in';
+  paper.style.transform = dir > 0 ? 'rotateX(-78deg)' : 'rotateX(78deg)';
+  paper.style.opacity = '0.18';
+
+  setTimeout(function () {
+    mutate();
+    render();
+    paper.style.transition = 'none';
+    paper.style.transform = dir > 0 ? 'rotateX(60deg)' : 'rotateX(-60deg)';
+    paper.style.opacity = '0';
+    void paper.offsetWidth;
+    paper.style.transition = 'transform .34s cubic-bezier(.2,.7,.3,1), opacity .3s ease-out';
+    paper.style.transform = 'rotateX(0deg)';
+    paper.style.opacity = '1';
+    setTimeout(function () { turning = false; }, 340);
+  }, 270);
+}
+
+function goNext() {
+  if (view !== 'day') return;
+  var list = getPageList();
+  var i = list.indexOf(currentDate);
+  if (i < 0) { currentDate = list[0]; render(); return; }
+  if (i >= list.length - 1) { toast('This is the oldest page in your diary.'); return; }
+  pageTurn(1, function () { currentDate = list[i + 1]; view = 'day'; });
+  flushSave();
+}
+
+function goPrev() {
+  if (view !== 'day') return;
+  var list = getPageList();
+  var i = list.indexOf(currentDate);
+  if (i <= 0) { toast('This is the most recent page.'); return; }
+  pageTurn(-1, function () { currentDate = list[i - 1]; view = 'day'; });
+  flushSave();
+}
+
+function openDate(key) {
+  if (key > todayKey()) { toast('You cannot write about a future day.'); return; }
+  currentDate = key;
+  view = 'day';
+  render();
+  updateTabs();
+}
+
+/* ============================================================
+   7. RENDER DISPATCH
+   ============================================================ */
+function render() {
+  var inner = document.getElementById('paperInner');
+  if (!inner) return;
+  inner.scrollTop = 0;
+  inner.innerHTML = '';
+
+  if (view === 'day') renderDay(inner);
+  else if (view === 'quotes') renderQuotes(inner);
+  else if (view === 'calendar') renderCalendar(inner);
+  else if (view === 'journey') renderJourney(inner);
+  else if (view === 'memories') renderMemories(inner);
+  else if (view === 'bookmarks') renderBookmarks(inner);
+
+  updateControls();
+}
+
+function updateTabs() {
+  var tabs = document.querySelectorAll('.tab');
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].classList.toggle('active', tabs[i].getAttribute('data-view') === view);
+  }
+}
+
+function updateControls() {
+  var bar = document.getElementById('controls');
+  bar.style.display = (view === 'day') ? 'flex' : 'none';
+  if (view !== 'day') return;
+  var list = getPageList();
+  var i = list.indexOf(currentDate);
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  prevBtn.disabled = (i <= 0);
+  nextBtn.disabled = (i >= list.length - 1);
+  prevBtn.title = i > 0 ? 'Newer: ' + prettyShort(list[i - 1]) : 'Most recent page';
+  nextBtn.title = (i >= 0 && i < list.length - 1) ? 'Older: ' + prettyShort(list[i + 1]) : 'Oldest page';
+}
+
+function prettyShort(k) {
+  var d = parseKey(k);
+  return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
+}
+
+function flashSaved() {
+  var s = document.getElementById('saveStatus');
+  if (!s) return;
+  s.textContent = 'Saved ✓';
+  s.classList.add('on');
+  clearTimeout(s._t);
+  s._t = setTimeout(function () { s.classList.remove('on'); }, 1400);
+}
+
+/* ============================================================
+   8. VIEW: MY DAY
+   ============================================================ */
+function renderDay(inner) {
+  var dk = currentDate;
+  var d = getDay(dk);
+  var dt = parseKey(dk);
+  var isToday = (dk === todayKey());
+
+  /* ---- header ---- */
+  var head = el('div', 'page-head');
+  var headLeft = el('div');
+  headLeft.appendChild(el('div', 'page-weekday', dt.toLocaleDateString(undefined, { weekday: 'long' })));
+  headLeft.appendChild(el('div', 'page-date',
+    dt.toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' }) +
+    (isToday ? ' · today' : '')));
+  var status = el('span', 'save-status');
+  status.id = 'saveStatus';
+  headLeft.appendChild(status);
+  head.appendChild(headLeft);
+
+  var bm = el('button', 'bm-btn' + (state.bookmarks.indexOf(dk) >= 0 ? ' active' : ''));
+  bm.type = 'button';
+  bm.innerHTML = BOOKMARK_SVG;
+  bm.title = 'Bookmark this page';
+  bm.setAttribute('aria-label', 'Bookmark this page');
+  bm.setAttribute('aria-pressed', state.bookmarks.indexOf(dk) >= 0 ? 'true' : 'false');
+  bm.addEventListener('click', function () {
+    var idx = state.bookmarks.indexOf(dk);
+    if (idx >= 0) {
+      state.bookmarks.splice(idx, 1);
+      bm.classList.remove('active');
+      bm.setAttribute('aria-pressed', 'false');
+      toast('Bookmark removed');
+    } else {
+      state.bookmarks.push(dk);
+      bm.classList.add('active');
+      bm.setAttribute('aria-pressed', 'true');
+      toast('Page bookmarked');
+    }
+    save();
+  });
+  head.appendChild(bm);
+  inner.appendChild(head);
+
+  /* ---- thoughts ---- */
+  var tBlock = el('section', 'block');
+  tBlock.appendChild(el('h3', 'block-title', "Today's Thoughts"));
+  var ta = el('textarea', 'thoughts');
+  ta.placeholder = 'Dear diary…';
+  ta.value = d.thoughts || '';
+  ta.setAttribute('aria-label', "Today's thoughts");
+  ta.setAttribute('spellcheck', 'true');
+  ta.addEventListener('input', function () {
+    d.thoughts = ta.value;
+    save();
+    flashSaved();
+  });
+  tBlock.appendChild(ta);
+  inner.appendChild(tBlock);
+
+  /* ---- tasks ---- */
+  var taskBlock = el('section', 'block');
+  taskBlock.appendChild(el('h3', 'block-title', 'Daily Tasks'));
+  var addRow = el('div', 'task-add');
+  var taskInput = el('input', 'task-input');
+  taskInput.type = 'text';
+  taskInput.maxLength = 160;
+  taskInput.placeholder = 'Add a task for this day…';
+  taskInput.setAttribute('aria-label', 'New task');
+  var addBtn = el('button', 'btn-add', 'Add');
+  addBtn.type = 'button';
+  addRow.appendChild(taskInput);
+  addRow.appendChild(addBtn);
+  taskBlock.appendChild(addRow);
+
+  var list = el('ul', 'task-list');
+  d.tasks.forEach(function (t) { list.appendChild(taskNode(t, d, list)); });
+  taskBlock.appendChild(list);
+  inner.appendChild(taskBlock);
+
+  function addTask() {
+    var text = taskInput.value.trim();
+    if (!text) { taskInput.focus(); return; }
+    var t = { id: uid(), text: text, done: false };
+    d.tasks.push(t);
+    list.appendChild(taskNode(t, d, list));
+    taskInput.value = '';
+    save();
+    taskInput.focus();
+  }
+  addBtn.addEventListener('click', addTask);
+  taskInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); addTask(); }
+  });
+
+  /* ---- stars ---- */
+  var starBlock = el('section', 'block');
+  starBlock.appendChild(el('h3', 'block-title', 'How was your day?'));
+  var starsWrap = el('div', 'stars');
+  starsWrap.setAttribute('role', 'radiogroup');
+  starsWrap.setAttribute('aria-label', 'Star rating for this day');
+  var ratingText = el('div', 'rating-text');
+
+  function paintStars() {
+    var nodes = starsWrap.querySelectorAll('.star');
+    for (var i = 0; i < nodes.length; i++) {
+      var on = (i < d.rating);
+      nodes[i].classList.toggle('on', on);
+      nodes[i].setAttribute('aria-checked', on ? 'true' : 'false');
+    }
+    ratingText.textContent = RATING_WORDS[d.rating] || '';
+  }
+
+  for (var si = 1; si <= 5; si++) {
+    (function (n) {
+      var b = el('button', 'star');
+      b.type = 'button';
+      b.innerHTML = STAR_SVG;
+      b.setAttribute('role', 'radio');
+      b.setAttribute('aria-checked', 'false');
+      b.setAttribute('aria-label', n + ' star' + (n > 1 ? 's' : ''));
+      b.addEventListener('click', function () {
+        d.rating = (d.rating === n) ? 0 : n;
+        paintStars();
+        save();
+      });
+      starsWrap.appendChild(b);
+    })(si);
+  }
+  paintStars();
+  starBlock.appendChild(starsWrap);
+  starBlock.appendChild(ratingText);
+  inner.appendChild(starBlock);
+
+  /* ---- hint ---- */
+  inner.appendChild(el('div', 'swipe-hint', 'Swipe up to turn the page ✦'));
+}
+
+function taskNode(t, dayRef, listRef) {
+  var li = el('li', 'task' + (t.done ? ' done' : ''));
+  li.dataset.id = t.id;
+
+  var cb = el('button', 'task-check');
+  cb.type = 'button';
+  cb.setAttribute('role', 'checkbox');
+  cb.setAttribute('aria-checked', t.done ? 'true' : 'false');
+  cb.setAttribute('aria-label', 'Mark task done');
+  cb.innerHTML = CHECK_SVG;
+  cb.addEventListener('click', function () {
+    t.done = !t.done;
+    li.classList.toggle('done', t.done);
+    cb.setAttribute('aria-checked', t.done ? 'true' : 'false');
+    save();
+  });
+
+  var span = el('span', 'task-text');
+  span.textContent = t.text;
+
+  var del = el('button', 'task-del');
+  del.type = 'button';
+  del.setAttribute('aria-label', 'Delete task');
+  del.innerHTML = TRASH_SVG;
+  del.addEventListener('click', function () {
+    var i = dayRef.tasks.findIndex(function (x) { return x.id === t.id; });
+    if (i >= 0) dayRef.tasks.splice(i, 1);
+    if (li.parentNode) li.parentNode.removeChild(li);
+    save();
+  });
+
+  li.appendChild(cb);
+  li.appendChild(span);
+  li.appendChild(del);
+  return li;
+}
+
+/* ============================================================
+   9. VIEW: FAVOURITE QUOTES
+   ============================================================ */
+function renderQuotes(inner) {
+  var head = el('div', 'page-head');
+  var hl = el('div');
+  hl.appendChild(el('div', 'page-weekday', 'Favourite Quotes'));
+  hl.appendChild(el('div', 'page-date', 'Words to keep close'));
+  head.appendChild(hl);
+  inner.appendChild(head);
+
+  var card = el('div', 'quote-card');
+  var qText = el('p', 'quote-text');
+  var qAuthor = el('p', 'quote-author');
+  card.appendChild(qText);
+  card.appendChild(qAuthor);
+  inner.appendChild(card);
+
+  var actions = el('div', 'quote-actions');
+  var nextBtn = el('button', 'btn-soft', 'Next Quote');
+  nextBtn.type = 'button';
+  var saveBtn = el('button', 'btn-gold sm', 'Save ♥');
+  saveBtn.type = 'button';
+  actions.appendChild(nextBtn);
+  actions.appendChild(saveBtn);
+  inner.appendChild(actions);
+
+  function paintQuote() {
+    var q = QUOTES[currentQuoteIdx % QUOTES.length];
+    qText.textContent = '“' + q.t + '”';
+    qAuthor.textContent = '— ' + q.a;
+  }
+  paintQuote();
+
+  nextBtn.addEventListener('click', function () {
+    var next = currentQuoteIdx;
+    while (next === currentQuoteIdx) {
+      next = Math.floor(Math.random() * QUOTES.length);
+      if (QUOTES.length === 1) break;
+    }
+    currentQuoteIdx = next;
+    paintQuote();
+  });
+
+  saveBtn.addEventListener('click', function () {
+    var q = QUOTES[currentQuoteIdx % QUOTES.length];
+    var exists = state.quotes.some(function (x) { return x.t === q.t; });
+    if (exists) { toast('This quote is already saved.'); return; }
+    state.quotes.unshift({ id: uid(), t: q.t, a: q.a, saved: new Date().toISOString() });
+    save(true);
+    toast('Quote saved to favourites ♥');
+    renderQuotes(inner);
+  });
+
+  inner.appendChild(el('h3', 'block-title', 'Saved Quotes')).style.marginTop = '28px';
+  var savedWrap = el('div');
+  inner.appendChild(savedWrap);
+
+  if (!state.quotes.length) {
+    savedWrap.appendChild(el('p', 'empty-note', 'No saved quotes yet. Tap “Save ♥” to keep one here.'));
+  } else {
+    state.quotes.forEach(function (q) {
+      var item = el('div', 'saved-quote');
+      var body = el('div');
+      body.style.flex = '1 1 auto';
+      var p = el('p', null);
+      p.textContent = '“' + q.t + '”';
+      var sm = el('small', null);
+      sm.textContent = '— ' + (q.a || 'Unknown');
+      body.appendChild(p);
+      body.appendChild(sm);
+      item.appendChild(body);
+      var del = el('button', 'task-del');
+      del.type = 'button';
+      del.setAttribute('aria-label', 'Delete saved quote');
+      del.innerHTML = TRASH_SVG;
+      del.addEventListener('click', function () {
+        var i = state.quotes.findIndex(function (x) { return x.id === q.id; });
+        if (i >= 0) state.quotes.splice(i, 1);
+        save(true);
+        renderQuotes(inner);
+      });
+      item.appendChild(del);
+      savedWrap.appendChild(item);
+    });
+  }
+}
+
+/* ============================================================
+   10. VIEW: CALENDAR
+   ============================================================ */
+function renderCalendar(inner) {
+  var y = calMonth.getFullYear();
+  var m = calMonth.getMonth();
+  var tk = todayKey();
+
+  var head = el('div', 'page-head');
+  var hl = el('div');
+  hl.appendChild(el('div', 'page-weekday', 'Calendar'));
+  hl.appendChild(el('div', 'page-date', 'Tap a day to open its page'));
+  head.appendChild(hl);
+  inner.appendChild(head);
+
+  var calHead = el('div', 'cal-head');
+  var prev = el('button', 'cal-nav', '‹');
+  prev.type = 'button';
+  prev.setAttribute('aria-label', 'Previous month');
+  var monthName = el('div', 'cal-month', calMonth.toLocaleDateString(undefined, { month: 'long', year: 'numeric' }));
+  var next = el('button', 'cal-nav', '›');
+  next.type = 'button';
+  next.setAttribute('aria-label', 'Next month');
+  calHead.appendChild(prev);
+  calHead.appendChild(monthName);
+  calHead.appendChild(next);
+  inner.appendChild(calHead);
+
+  var grid = el('div', 'cal-grid');
+  inner.appendChild(grid);
+
+  ['S', 'M', 'T', 'W', 'T', 'F', 'S'].forEach(function (d) {
+    grid.appendChild(el('div', 'cal-dow', d));
+  });
+
+  var firstDow = new Date(y, m, 1).getDay();
+  var dim = new Date(y, m + 1, 0).getDate();
+
+  for (var b = 0; b < firstDow; b++) grid.appendChild(el('div', 'cal-cell empty'));
+
+  for (var day = 1; day <= dim; day++) {
+    (function (dayNum) {
+      var key = y + '-' + pad(m + 1) + '-' + pad(dayNum);
+      var cell = el('button', 'cal-cell');
+      cell.type = 'button';
+      cell.innerHTML = '<span>' + dayNum + '</span>';
+      if (key === tk) cell.classList.add('today');
+      if (hasContent(state.days[key])) cell.classList.add('has-entry');
+      if (state.bookmarks.indexOf(key) >= 0) cell.classList.add('bookmarked');
+      if (key > tk) {
+        cell.classList.add('future');
+        cell.disabled = true;
+        cell.setAttribute('aria-disabled', 'true');
+      } else {
+        cell.setAttribute('aria-label', parseKey(key).toLocaleDateString(undefined,
+          { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }));
+        cell.addEventListener('click', function () { openDate(key); });
+      }
+      grid.appendChild(cell);
+    })(day);
+  }
+
+  prev.addEventListener('click', function () {
+    calMonth = new Date(y, m - 1, 1, 12, 0, 0, 0);
+    render();
+  });
+  next.addEventListener('click', function () {
+    var nxt = new Date(y, m + 1, 1, 12, 0, 0, 0);
+    if (nxt.getTime() > Date.now() + 1000 * 60 * 60 * 24 * 31) {
+      toast('That is too far in the future.');
+      return;
+    }
+    calMonth = nxt;
+    render();
+  });
+}
+
+/* ============================================================
+   11. VIEW: MY JOURNEY
+   ============================================================ */
+function computeStreak() {
+  var streak = 0;
+  var cursor = new Date();
+  if (!hasContent(state.days[todayKey()])) cursor = addDays(cursor, -1);
+  var guard = 0;
+  while (hasContent(state.days[dkOf(cursor)]) && guard < 4000) {
+    streak++;
+    cursor = addDays(cursor, -1);
+    guard++;
+  }
+  return streak;
+}
+
+function renderJourney(inner) {
+  var keys = Object.keys(state.days).filter(function (k) { return hasContent(state.days[k]); });
+  var totalDays = keys.length;
+  var streak = computeStreak();
+  var totalStars = 0;
+  var totalDone = 0;
+  var totalTasks = 0;
+
+  keys.forEach(function (k) {
+    var d = state.days[k];
+    totalStars += (typeof d.rating === 'number' ? d.rating : 0);
+    if (Array.isArray(d.tasks)) {
+      totalTasks += d.tasks.length;
+      totalDone += d.tasks.filter(function (t) { return t.done; }).length;
+    }
+  });
+
+  var head = el('div', 'page-head');
+  var hl = el('div');
+  hl.appendChild(el('div', 'page-weekday', 'My Journey'));
+  hl.appendChild(el('div', 'page-date', 'A little look at how far you have come'));
+  head.appendChild(hl);
+  inner.appendChild(head);
+
+  var grid = el('div', 'stat-grid');
+  [
+    [totalDays, 'Diary days started'],
+    [streak, 'Current streak'],
+    [totalStars, 'Stars collected'],
+    [totalDone, 'Tasks completed']
+  ].forEach(function (pair) {
+    var card = el('div', 'stat-card');
+    card.appendChild(el('div', 'stat-num', String(pair[0])));
+    card.appendChild(el('div', 'stat-label', pair[1]));
+    grid.appendChild(card);
+  });
+  inner.appendChild(grid);
+
+  if (totalTasks > totalDone) {
+    var p = el('p', 'hint');
+    p.style.marginTop = '12px';
+    p.textContent = (totalTasks - totalDone) + ' task' + ((totalTasks - totalDone) === 1 ? '' : 's') + ' still waiting for you.';
+    inner.appendChild(p);
+  }
+
+  inner.appendChild(el('h3', 'block-title', 'Recent Diary Entries')).style.marginTop = '28px';
+
+  var recent = keys.slice().sort().reverse().slice(0, 6);
+  if (!recent.length) {
+    inner.appendChild(el('p', 'empty-note', 'Your journey starts with the first line you write.'));
+    return;
+  }
+  recent.forEach(function (k) {
+    var d = state.days[k];
+    var item = el('div', 'recent-item');
+    item.setAttribute('role', 'button');
+    item.tabIndex = 0;
+    var dt = parseKey(k);
+    item.appendChild(el('div', 'r-date',
+      dt.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })));
+    var snippet = (d.thoughts && d.thoughts.trim()) ? d.thoughts.trim() : '';
+    if (!snippet) {
+      if (Array.isArray(d.tasks) && d.tasks.length) snippet = d.tasks.length + ' task' + (d.tasks.length === 1 ? '' : 's') + ' written.';
+      else if (d.rating) snippet = RATING_WORDS[d.rating] + '.';
+      else snippet = 'A quiet day.';
+    }
+    item.appendChild(el('div', 'r-snip', escapeHtml(snippet.slice(0, 160))));
+    item.addEventListener('click', function () { openDate(k); });
+    item.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDate(k); }
+    });
+    inner.appendChild(item);
+  });
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+/* ============================================================
+   12. VIEW: LITTLE MEMORIES
+   ============================================================ */
+function renderMemories(inner) {
+  var head = el('div', 'page-head');
+  var hl = el('div');
+  hl.appendChild(el('div', 'page-weekday', 'Little Memories'));
+  hl.appendChild(el('div', 'page-date', 'Moments worth keeping'));
+  head.appendChild(hl);
+  inner.appendChild(head);
+
+  var form = el('div', 'memory-form');
+  var input = el('textarea', 'memory-input');
+  input.placeholder = 'A small moment I never want to forget…';
+  input.setAttribute('aria-label', 'New memory');
+  input.maxLength = 800;
+  var addBtn = el('button', 'btn-gold sm', 'Save Memory');
+  addBtn.type = 'button';
+  addBtn.style.alignSelf = 'flex-start';
+  form.appendChild(input);
+  form.appendChild(addBtn);
+  inner.appendChild(form);
+
+  function addMemory() {
+    var text = input.value.trim();
+    if (!text) { input.focus(); return; }
+    state.memories.unshift({
+      id: uid(),
+      text: text,
+      date: todayKey(),
+      created: new Date().toISOString()
+    });
+    save(true);
+    toast('Memory saved ✦');
+    renderMemories(inner);
+  }
+  addBtn.addEventListener('click', addMemory);
+
+  inner.appendChild(el('h3', 'block-title', 'Saved Memories')).style.marginTop = '26px';
+
+  if (!state.memories.length) {
+    inner.appendChild(el('p', 'empty-note', 'No memories yet — the little ones count the most.'));
+    return;
+  }
+
+  state.memories.forEach(function (mem) {
+    var item = el('div', 'memory-item');
+    var body = el('div', 'memory-body');
+    var p = el('p', 'memory-text');
+    p.textContent = mem.text;
+    var dateStr = '—';
+    if (mem.date && /^\d{4}-\d{2}-\d{2}$/.test(mem.date)) {
+      dateStr = parseKey(mem.date).toLocaleDateString(undefined,
+        { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    }
+    body.appendChild(p);
+    body.appendChild(el('div', 'memory-date', dateStr));
+    item.appendChild(body);
+
+    var del = el('button', 'task-del');
+    del.type = 'button';
+    del.setAttribute('aria-label', 'Delete memory');
+    del.innerHTML = TRASH_SVG;
+    del.addEventListener('click', function () {
+      var i = state.memories.findIndex(function (x) { return x.id === mem.id; });
+      if (i >= 0) state.memories.splice(i, 1);
+      save(true);
+      renderMemories(inner);
+    });
+    item.appendChild(del);
+    inner.appendChild(item);
+  });
+}
+
+/* ============================================================
+   13. VIEW: BOOKMARKS
+   ============================================================ */
+function renderBookmarks(inner) {
+  var head = el('div', 'page-head');
+  var hl = el('div');
+  hl.appendChild(el('div', 'page-weekday', 'Bookmarks'));
+  hl.appendChild(el('div', 'page-date', 'Pages you wanted to keep close'));
+  head.appendChild(hl);
+  inner.appendChild(head);
+
+  var list = state.bookmarks.slice().sort().reverse();
+  if (!list.length) {
+    inner.appendChild(el('p', 'empty-note', 'No bookmarks yet. Open any diary page and tap the ribbon icon.'));
+    return;
+  }
+
+  list.forEach(function (k) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(k)) return;
+    var dt = parseKey(k);
+    var item = el('div', 'recent-item');
+    item.setAttribute('role', 'button');
+    item.tabIndex = 0;
+    item.appendChild(el('div', 'r-date',
+      dt.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })));
+    var d = state.days[k];
+    var snippet = (d && d.thoughts && d.thoughts.trim()) ? d.thoughts.trim() : 'No words written on this page yet.';
+    item.appendChild(el('div', 'r-snip', escapeHtml(snippet.slice(0, 130))));
+
+    var del = el('button', 'task-del');
+    del.type = 'button';
+    del.setAttribute('aria-label', 'Remove bookmark');
+    del.innerHTML = TRASH_SVG;
+    del.style.position = 'absolute';
+    item.style.position = 'relative';
+    item.style.paddingRight = '46px';
+    del.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var i = state.bookmarks.indexOf(k);
+      if (i >= 0) state.bookmarks.splice(i, 1);
+      save(true);
+      renderBookmarks(inner);
+    });
+    item.appendChild(del);
+
+    item.addEventListener('click', function () { openDate(k); });
+    item.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDate(k); }
+    });
+    inner.appendChild(item);
+  });
+}
+
+/* ============================================================
+   14. TOUCH / SWIPE NAVIGATION
+   ============================================================ */
+var touchInfo = null;
+
+function isEditable(node) {
+  if (!node || !node.tagName) return false;
+  var tag = node.tagName;
+  return tag === 'TEXTAREA' || tag === 'INPUT' || tag === 'SELECT' ||
+    node.isContentEditable === true ||
+    !!(node.closest && node.closest('textarea, input, select, [contenteditable="true"]'));
+}
+
+function onTouchStart(e) {
+  touchInfo = null;
+  if (e.touches.length !== 1) return;
+  var t = e.touches[0];
+  var target = e.target;
+  if (isEditable(target)) return;
+  var scroller = (target.closest ? target.closest('.paper-inner') : null);
+  touchInfo = {
+    x: t.clientX,
+    y: t.clientY,
+    scroller: scroller,
+    active: true
+  };
+}
+
+function onTouchMove(e) {
+  if (!touchInfo || !touchInfo.active) return;
+  /* If the user starts moving significantly, remember the dominant axis
+     so a mostly-horizontal gesture never turns the page. */
+  if (e.touches.length !== 1) return;
+  var t = e.touches[0];
+  var dx = Math.abs(t.clientX - touchInfo.x);
+  var dy = Math.abs(t.clientY - touchInfo.y);
+  if (dx > 24 && dx > dy * 1.4) touchInfo.active = false;
+}
+
+function onTouchEnd(e) {
+  if (!touchInfo || !touchInfo.active) { touchInfo = null; return; }
+  var t = e.changedTouches[0];
+  var dy = t.clientY - touchInfo.y;
+  var dx = t.clientX - touchInfo.x;
+  var scroller = touchInfo.scroller;
+  touchInfo = null;
+
+  if (Math.abs(dy) < SWIPE_MIN) return;
+  if (Math.abs(dy) < Math.abs(dx) * 1.5) return;
+  if (view !== 'day') return;
+
+  if (scroller) {
+    var atBottom = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 10;
+    var atTop = scroller.scrollTop <= 10;
+    if (dy < 0 && !atBottom) return;  /* still scrolling the page down */
+    if (dy > 0 && !atTop) return;     /* still scrolling the page up */
+  }
+
+  if (dy < 0) goNext();
+  else goPrev();
+}
+
+/* ============================================================
+   15. SETTINGS / BACKUP
+   ============================================================ */
+function openSettings() {
+  document.getElementById('settingsModal').classList.remove('hidden');
+  document.getElementById('pwMsg').textContent = '';
+  document.getElementById('curPw').value = '';
+  document.getElementById('newPw').value = '';
+  document.getElementById('newPw2').value = '';
+}
+function closeSettings() {
+  document.getElementById('settingsModal').classList.add('hidden');
+}
+
+function exportData() {
+  try {
+    var payload = JSON.stringify(state, null, 2);
+    var blob = new Blob([payload], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'Shreyas_Diary_Backup_' + todayKey() + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 2500);
+    toast('Backup exported.');
+  } catch (err) {
+    toast('Export failed on this browser.');
+  }
+}
+
+function importData(file) {
+  var reader = new FileReader();
+  reader.onload = function () {
+    var parsed;
+    try {
+      parsed = JSON.parse(String(reader.result));
+    } catch (err) {
+      toast('That file is not a valid backup.');
+      return;
+    }
+    if (!parsed || typeof parsed !== 'object' || !parsed.days) {
+      toast('That file does not look like a diary backup.');
+      return;
+    }
+    var ok = window.confirm(
+      'Import this backup?\n\nThis will REPLACE all current entries, tasks, ratings, quotes, memories and bookmarks.\n\nYour password will stay the same.'
+    );
+    if (!ok) return;
+
+    var incomingDays = (parsed.days && typeof parsed.days === 'object') ? parsed.days : {};
+    state.days = incomingDays;
+    state.quotes = Array.isArray(parsed.quotes) ? parsed.quotes : [];
+    state.memories = Array.isArray(parsed.memories) ? parsed.memories : [];
+    state.bookmarks = Array.isArray(parsed.bookmarks) ? parsed.bookmarks : [];
+    save(true);
+    currentDate = todayKey();
+    view = 'day';
+    render();
+    updateTabs();
+    toast('Backup restored.');
+  };
+  reader.onerror = function () { toast('Could not read that file.'); };
+  reader.readAsText(file);
+}
+
+/* ============================================================
+   16. INIT
+   ============================================================ */
+function init() {
+  /* spiral rings */
+  var spiral = document.getElementById('spiral');
+  for (var i = 0; i < 16; i++) spiral.appendChild(el('div', 'ring'));
+
+  state = loadState();
+
+  /* ---- lock screen wiring ---- */
+  var lockForm = document.getElementById('lockForm');
+  var lockMsg = document.getElementById('lockMsg');
+  var lockMode = 'create';
+
+  function applyLockMode() {
+    lockMode = state.auth ? 'unlock' : 'create';
+    showLockScreen(lockMode);
+  }
+  applyLockMode();
+
+  lockForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var p1 = document.getElementById('pw1').value;
+    var p2 = document.getElementById('pw2').value;
+    lockMsg.textContent = '';
+
+    if (lockMode === 'create') {
+      if (p1.length < 4) { lockMsg.textContent = 'Please use at least 4 characters.'; return; }
+      if (p1 !== p2) { lockMsg.textContent = 'The two passwords do not match.'; return; }
+      createPassword(p1).then(function () {
+        document.getElementById('pw1').value = '';
+        document.getElementById('pw2').value = '';
+        showCoverScreen();
+      }).catch(function () {
+        lockMsg.textContent = 'Could not save the password on this browser.';
+      });
+    } else {
+      if (!p1) { lockMsg.textContent = 'Please enter your password.'; return; }
+      verifyPassword(p1).then(function (ok) {
+        if (ok) {
+          document.getElementById('pw1').value = '';
+          showCoverScreen();
+        } else {
+          lockMsg.textContent = 'Incorrect password. Please try again.';
+          document.getElementById('pw1').value = '';
+          document.getElementById('pw1').focus();
+        }
+      }).catch(function () {
+        lockMsg.textContent = 'Something went wrong. Please try again.';
+      });
+    }
+  });
+
+  /* ---- cover ---- */
+  document.getElementById('openDiaryBtn').addEventListener('click', openDiary);
+
+  /* ---- tabs ---- */
+  var tabs = document.getElementById('tabs');
+  tabs.addEventListener('click', function (e) {
+    var btn = e.target.closest('.tab');
+    if (!btn) return;
+    var v = btn.getAttribute('data-view');
+    if (!v || v === view) return;
+    flushSave();
+    view = v;
+    if (v === 'day') currentDate = currentDate || todayKey();
+    render();
+    updateTabs();
+  });
+
+  /* ---- page controls ---- */
+  document.getElementById('prevBtn').addEventListener('click', goPrev);
+  document.getElementById('nextBtn').addEventListener('click', goNext);
+  document.getElementById('todayBtn').addEventListener('click', function () {
+    flushSave();
+    currentDate = todayKey();
+    view = 'day';
+    if (turning) return;
+    pageTurn(-1, function () { currentDate = todayKey(); view = 'day'; });
+    updateTabs();
+  });
+
+  /* ---- settings ---- */
+  document.getElementById('settingsBtn').addEventListener('click', openSettings);
+  document.getElementById('closeSettings').addEventListener('click', closeSettings);
+  document.getElementById('settingsModal').addEventListener('click', function (e) {
+    if (e.target === this) closeSettings();
+  });
+
+  document.getElementById('pwForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var msg = document.getElementById('pwMsg');
+    msg.classList.remove('ok');
+    msg.textContent = '';
+    var cur = document.getElementById('curPw').value;
+    var n1 = document.getElementById('newPw').value;
+    var n2 = document.getElementById('newPw2').value;
+
+    if (n1.length < 4) { msg.textContent = 'New password must be at least 4 characters.'; return; }
+    if (n1 !== n2) { msg.textContent = 'New passwords do not match.'; return; }
+
+    verifyPassword(cur).then(function (ok) {
+      if (!ok) { msg.textContent = 'Current password is incorrect.'; return; }
+      createPassword(n1).then(function () {
+        msg.classList.add('ok');
+        msg.textContent = 'Password updated successfully.';
+        document.getElementById('curPw').value = '';
+        document.getElementById('newPw').value = '';
+        document.getElementById('newPw2').value = '';
+        toast('Password changed.');
+      });
+    });
+  });
+
+  document.getElementById('exportBtn').addEventListener('click', exportData);
+  document.getElementById('importBtn').addEventListener('click', function () {
+    document.getElementById('importFile').click();
+  });
+  document.getElementById('importFile').addEventListener('change', function () {
+    if (this.files && this.files[0]) importData(this.files[0]);
+    this.value = '';
+  });
+
+  document.getElementById('wipeBtn').addEventListener('click', function () {
+    var first = window.confirm(
+      'Delete ALL diary data?\n\nEvery entry, task, rating, memory, quote and bookmark will be permanently removed from this browser. This cannot be undone.'
+    );
+    if (!first) return;
+    var second = window.confirm('Are you absolutely sure? Consider exporting a backup first.');
+    if (!second) return;
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+    state = defaultState();
+    location.reload();
+  });
+
+  /* ---- swipe listeners ---- */
+  var paper = document.getElementById('paper');
+  paper.addEventListener('touchstart', onTouchStart, { passive: true });
+  paper.addEventListener('touchmove', onTouchMove, { passive: true });
+  paper.addEventListener('touchend', onTouchEnd, { passive: true });
+  paper.addEventListener('touchcancel', function () { touchInfo = null; }, { passive: true });
+
+  /* ---- keyboard arrows (desktop) ---- */
+  document.addEventListener('keydown', function (e) {
+    if (!document.getElementById('app').classList.contains('show')) return;
+    if (document.getElementById('settingsModal').classList.contains('hidden') === false) return;
+    if (isEditable(e.target)) return;
+    if (view !== 'day') return;
+    if (e.key === 'ArrowUp') { e.preventDefault(); goNext(); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); goPrev(); }
+  });
+
+  /* ---- persistence safety ---- */
+  window.addEventListener('beforeunload', flushSave);
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') flushSave();
+  });
+
+  /* ---- first render (app is hidden until OPEN is pressed) ---- */
+  render();
+  updateTabs();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</body>
+</html>
