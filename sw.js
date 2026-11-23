@@ -34,8 +34,38 @@ self.addEventListener('fetch', (e) => {
     caches.match(e.request).then((res) => {
       return res || fetch(e.request);
     }).catch(() => {
-        // Fallback for offline if cache fails
         return caches.match('./index.html');
+    })
+  );
+});
+
+// Listen for notification messages from the main app
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SHOW_NOTIFICATION') {
+    self.registration.showNotification(event.data.title, {
+      body: event.data.body,
+      icon: './icon.svg',
+      badge: './icon.svg',
+      vibrate: [200, 100, 200], // A little vibration pattern for Android
+      tag: 'diary-reminder',
+      renotify: true
+    });
+  }
+});
+
+// When user clicks the notification, open the app
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil(
+    clients.matchAll({ type: 'window' }).then((clientList) => {
+      for (const client of clientList) {
+        if (client.url && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow('./');
+      }
     })
   );
 });
